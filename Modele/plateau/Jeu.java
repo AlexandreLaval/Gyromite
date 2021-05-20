@@ -1,5 +1,9 @@
 package Modele.plateau;
 
+import Modele.deplacements.Direction;
+
+import java.awt.*;
+import java.util.HashMap;
 import java.util.Observable;
 
 public class Jeu  extends Observable implements Runnable {
@@ -8,6 +12,8 @@ public class Jeu  extends Observable implements Runnable {
     public static final int SIZE_Y = 20;
 
     private int pause = 200; // période de rafraichissement
+
+    private HashMap<Entite, Point> carte = new HashMap<>();
 
     private Heros heros;
 
@@ -61,6 +67,13 @@ public class Jeu  extends Observable implements Runnable {
                 }
             }
         }
+    }
+
+    public boolean deplacerEntite(Entite entite, Direction direction){
+        int px = carte.get(entite).x;
+        int py = carte.get(entite).y;
+       // grilleEntitesStatiques[px][py];
+        return false;
     }
 
     public void start() {
