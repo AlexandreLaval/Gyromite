@@ -1,6 +1,4 @@
 package Modele.deplacements;
 
-public class Colonne {
-
-
+public class IA {
 }
