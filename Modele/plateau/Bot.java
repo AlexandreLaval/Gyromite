@@ -22,4 +22,9 @@ public class Bot extends EntiteDynamique{
         return false;
     }
 
+    @Override
+    public boolean traversable() {
+        return false;
+    }
+
 }

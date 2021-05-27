@@ -117,11 +117,19 @@ public class VueControleur extends JFrame implements Observer {
 
         for (int x = 0; x < sizeX; x++) {
             for (int y = 0; y < sizeY; y++) {
-                EntiteStatique e = jeu.getEntite(x, y);
+                Entite e = jeu.getEntite(x, y);
+
                 if (e instanceof Mur) {
                     tabJLabel[x][y].setIcon(imgIcons.get("Mur"));
                 } else if (e instanceof CaseNormale) {
                     tabJLabel[x][y].setIcon(imgIcons.get("CaseVide"));
+                }else if(e instanceof  Colonne){
+                    if(! (jeu.getEntite(x,y-1) instanceof  Colonne))
+                        tabJLabel[x][y].setIcon((imgIcons.get("HautColonne")));
+                    else if(!(jeu.getEntite(x,y+1) instanceof  Colonne))
+                        tabJLabel[x][y].setIcon((imgIcons.get("BasColonne")));
+                    else
+                        tabJLabel[x][y].setIcon((imgIcons.get("MilieuColonne")));
                 }
             }
         }

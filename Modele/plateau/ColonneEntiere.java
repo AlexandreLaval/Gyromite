@@ -28,6 +28,11 @@ public class ColonneEntiere extends EntiteDynamique{
         return false;
     }
 
+    @Override
+    public boolean traversable() {
+        return false;
+    }
+
     //ajouter une colonne à colonne entière
     public void addCol(Colonne col) {
         colonnes.add(col);
@@ -36,6 +41,8 @@ public class ColonneEntiere extends EntiteDynamique{
     //va déplacer la colonne entière
    public void deplacerColonne(Direction direction){
 
-        //faire colonne.vanacerDirectionChoisir avant
+        //faire colonne avant AvancerDirectionChoisi
    }
+
+
 }

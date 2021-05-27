@@ -17,7 +17,7 @@ public class Jeu  extends Observable implements Runnable {
 
     private Heros heros;
 
-    private EntiteStatique[][] grilleEntitesStatiques = new EntiteStatique[SIZE_X][SIZE_Y];
+    private Entite[][] grilleEntites = new Entite[SIZE_X][SIZE_Y];
 
     public Jeu() {
         initialisationDesEntites();
@@ -27,16 +27,16 @@ public class Jeu  extends Observable implements Runnable {
         return heros;
     }
 
-    public EntiteStatique[][] getGrille() {
-        return grilleEntitesStatiques;
+    public Entite[][] getGrille() {
+        return grilleEntites;
     }
 
-    public EntiteStatique getEntite(int x, int y) {
+    public Entite getEntite(int x, int y) {
         if (x < 0 || x >= SIZE_X || y < 0 || y >= SIZE_Y) {
             // L'entité demandée est en-dehors de la grille
             return null;
         }
-        return grilleEntitesStatiques[x][y];
+        return grilleEntites[x][y];
     }
 
 
@@ -47,23 +47,37 @@ public class Jeu  extends Observable implements Runnable {
 
         // murs extérieurs horizontaux
         for (int x = 0; x < 16; x++) {
-            addEntiteStatique(new Mur(this), x, 0);
-            addEntiteStatique(new Mur(this), x, 9);
+            addEntite(new Mur(this), x, 0);
+            addEntite(new Mur(this), x, 9);
         }
 
         // murs extérieurs verticaux
         for (int y = 1; y < 9; y++) {
-            addEntiteStatique(new Mur(this), 0, y);
-            addEntiteStatique(new Mur(this), 19, y);
+            addEntite(new Mur(this), 0, y);
+            addEntite(new Mur(this), 19, y);
         }
 
-        addEntiteStatique(new Mur(this), 2, 6);
-        addEntiteStatique(new Mur(this), 3, 6);
+        addEntite(new Mur(this), 2, 6);
+        addEntite(new Mur(this), 3, 6);
+
+        //colonnes
+
+        ColonneEntiere colonneEntiere1 = new ColonneEntiere(this);
+        Colonne col11 = new Colonne(this);
+        Colonne col12 = new Colonne(this);
+        Colonne col13 = new Colonne(this);
+        addEntite(col11,10,17 );
+        addEntite(col12,10,18 );
+        addEntite(col13,10,19 );
+        colonneEntiere1.addCol(col11);
+        colonneEntiere1.addCol(col12);
+        colonneEntiere1.addCol(col13);
+
 
         for (int x = 0; x < SIZE_X; x++) {
             for (int y = 0; y < SIZE_Y; y++) {
-                if (grilleEntitesStatiques[x][y] == null) {
-                    grilleEntitesStatiques[x][y] = new CaseNormale(this);
+                if (grilleEntites[x][y] == null) {
+                    grilleEntites[x][y] = new CaseNormale(this);
                 }
             }
         }
@@ -95,9 +109,8 @@ public class Jeu  extends Observable implements Runnable {
         }
     }
 
-    private void addEntiteStatique(EntiteStatique e, int x, int y) {
-        grilleEntitesStatiques[x][y] = e;
-
+    private void addEntite(Entite e, int x, int y) {
+        grilleEntites[x][y] = e;
     }
 
 }

@@ -19,5 +19,12 @@ public class Colonne extends EntiteDynamique{
         return false;
     }
 
+    @Override
+    public boolean traversable() {
+        return false;
+    }
+
+
+
 
 }

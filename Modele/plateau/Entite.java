@@ -10,4 +10,6 @@ public abstract class Entite {
     public abstract boolean peutServirDeSupport();
     public abstract boolean peutPermettreDeMonterDescendre();
 
+    public abstract boolean traversable();
+
 }
