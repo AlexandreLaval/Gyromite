@@ -38,10 +38,24 @@ public class ColonneEntiere extends Entite{
         colonnes.add(col);
     }
 
-    //va déplacer la colonne entière
-   public void deplacerColonne(Direction direction){
+    //donne l'autorisation de déplacer la colonne entiere
+   public boolean deplacerColonne(Direction direction){
 
-        //faire colonne avant AvancerDirectionChoisi
+       boolean autorisation = false;
+       if (direction == Direction.Haut) {
+           for (int i = NB_COLONNE - 1; i >= 0; i--) {
+               if (direction != null) {
+                   autorisation = colonnes.get(i).avancerDirectionChoisie(direction);
+               }
+           }
+       } else if (direction == Direction.Bas) {
+           for (int i = 0; i < NB_COLONNE; i++) {
+               if (direction != null) {
+                   autorisation = colonnes.get(i).avancerDirectionChoisie(direction);
+               }
+           }
+       }
+       return autorisation;
    }
 
    //va vérifier si on peut déplacer la colonne entière vers le haut ou vers le bas (vérification si quelque chose bloque)
