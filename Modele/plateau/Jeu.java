@@ -3,6 +3,7 @@ package Modele.plateau;
 import Modele.deplacements.Direction;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Observable;
 
@@ -62,17 +63,22 @@ public class Jeu  extends Observable implements Runnable {
 
         //colonnes
 
-        ColonneEntiere colonneEntiere1 = new ColonneEntiere(this);
-        Colonne col11 = new Colonne(this);
-        Colonne col12 = new Colonne(this);
-        Colonne col13 = new Colonne(this);
-        addEntite(col11,10,17 );
-        addEntite(col12,10,18 );
-        addEntite(col13,10,19 );
-        colonneEntiere1.addCol(col11);
-        colonneEntiere1.addCol(col12);
-        colonneEntiere1.addCol(col13);
+        ArrayList<Colonne> colonnes = new ArrayList<>();
+        colonnes.add(new Colonne(this,10,17));
+        colonnes.add(new Colonne(this,10,18));
+        colonnes.add(new Colonne(this,10,19));
 
+        for (Colonne col:colonnes) {
+            addColonne(col);
+        }
+        ColonneEntiere colonneEntiere1 = new ColonneEntiere(this);
+
+        int index = 0;
+        colonneEntiere1.addCol(colonnes.get(index));
+        colonneEntiere1.addCol(colonnes.get(index+1));
+        colonneEntiere1.addCol(colonnes.get(index+2));
+
+        index += 3;
 
         for (int x = 0; x < SIZE_X; x++) {
             for (int y = 0; y < SIZE_Y; y++) {
@@ -111,6 +117,10 @@ public class Jeu  extends Observable implements Runnable {
 
     private void addEntite(Entite e, int x, int y) {
         grilleEntites[x][y] = e;
+    }
+
+    private void addColonne(Colonne col){
+        grilleEntites[col.getX()][col.getY()] = col;
     }
 
 }

@@ -2,8 +2,8 @@ package Modele.plateau;
 
 public class Bot extends EntiteDynamique{
 
-    public Bot(Jeu _jeu){
-        super(_jeu);
+    public Bot(Jeu _jeu, int _x, int _y){
+        super(_jeu, _x,_y);
 
     }
 

@@ -2,7 +2,7 @@ package Modele.plateau;
 import java.util.ArrayList;
 import Modele.deplacements.Direction;
 
-public class ColonneEntiere extends EntiteDynamique{
+public class ColonneEntiere extends Entite{
 
     public ArrayList<Colonne> colonnes;
 
@@ -42,6 +42,13 @@ public class ColonneEntiere extends EntiteDynamique{
    public void deplacerColonne(Direction direction){
 
         //faire colonne avant AvancerDirectionChoisi
+   }
+
+   //va vérifier si on peut déplacer la colonne entière vers le haut ou vers le bas (vérification si quelque chose bloque)
+   public boolean isOkToDeplace(){
+
+
+        return true;
    }
 
 

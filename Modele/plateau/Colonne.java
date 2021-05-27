@@ -2,7 +2,7 @@ package Modele.plateau;
 
 public class Colonne extends EntiteDynamique{
 
-    public Colonne(Jeu _jeu) { super(_jeu);}
+    public Colonne(Jeu _jeu, int _x, int _y) { super(_jeu,_x,_y);}
 
     @Override
     public boolean peutEtreEcrase() {
