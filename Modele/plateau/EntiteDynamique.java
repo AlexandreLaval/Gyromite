@@ -57,4 +57,5 @@ public abstract class EntiteDynamique extends Entite{
         return jeu.deplacerEntite(this,direction);
     }
 
+   //public Entite regarderDansLaDirection(Direction d) {return Entite;}
 }
