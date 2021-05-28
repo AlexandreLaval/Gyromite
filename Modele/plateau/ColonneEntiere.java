@@ -39,7 +39,7 @@ public class ColonneEntiere extends Entite{
     }
 
     //donne l'autorisation de déplacer la colonne entiere
-   public boolean deplacerColonne(Direction direction){
+   public boolean isOkToDeplacerColonne(Direction direction) {
 
        boolean autorisation = false;
        if (direction == Direction.Haut) {
@@ -56,13 +56,6 @@ public class ColonneEntiere extends Entite{
            }
        }
        return autorisation;
-   }
-
-   //va vérifier si on peut déplacer la colonne entière vers le haut ou vers le bas (vérification si quelque chose bloque)
-   public boolean isOkToDeplace(){
-
-
-        return true;
    }
 
 

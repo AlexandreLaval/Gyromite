@@ -7,7 +7,7 @@ public abstract class RealisateurDeplacement {
 
     protected ArrayList<EntiteDynamique> lstEntitesDynamiques = new ArrayList<EntiteDynamique>();
 
-    protected abstract boolean realiserDeplacement();
+    protected abstract boolean isOkToRealiserDeplacement();
 
     public void addEntiteDynamique(EntiteDynamique ed) {lstEntitesDynamiques.add(ed);};
 
