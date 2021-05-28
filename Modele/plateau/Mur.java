@@ -7,7 +7,6 @@ public class Mur extends EntiteStatique {
     public boolean peutEtreEcrase() {
         return false;
     }
-
     @Override
     public boolean peutServirDeSupport() {
         return false;
@@ -22,5 +21,4 @@ public class Mur extends EntiteStatique {
     public boolean traversable() {
         return false;
     }
-
 }

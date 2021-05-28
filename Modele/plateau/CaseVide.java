@@ -1,12 +1,11 @@
 package Modele.plateau;
 
-public class Colonne extends EntiteDynamique{
-
-    public Colonne(Jeu _jeu, int _x, int _y) { super(_jeu,_x,_y);}
+public class CaseVide extends EntiteStatique {
+    public CaseVide(Jeu _jeu) { super(_jeu); }
 
     @Override
     public boolean traversable() {
-        return false;
+        return true;
     }
 
     @Override
@@ -16,7 +15,7 @@ public class Colonne extends EntiteDynamique{
 
     @Override
     public boolean peutServirDeSupport() {
-        return true;
+        return false;
     }
 
     @Override

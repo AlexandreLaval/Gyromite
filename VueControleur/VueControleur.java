@@ -24,10 +24,12 @@ import Modele.plateau.*;
  *
  */
 public class VueControleur extends JFrame implements Observer {
-    private Jeu jeu; // référence sur une classe de modèle : permet d'accéder aux données du modèle pour le rafraichissement, permet de communiquer les actions clavier (ou souris)
+    private final Jeu jeu; // référence sur une classe de modèle : permet d'accéder aux données du modèle pour le rafraichissement, permet de communiquer les actions clavier (ou souris)
 
-    private int sizeX; // taille de la grille affichée
-    private int sizeY;
+    private final int sizeX; // taille de la grille affichée
+    private final int sizeY;
+
+    private final int sizeImg = 28;
 
     // icones affichées dans la grille
     private HashMap<String,ImageIcon>  imgIcons;
@@ -36,8 +38,8 @@ public class VueControleur extends JFrame implements Observer {
 
 
     public VueControleur(Jeu _jeu) {
-        sizeX = jeu.SIZE_X;
-        sizeY = _jeu.SIZE_Y;
+        sizeX = Jeu.SIZE_X;
+        sizeY = Jeu.SIZE_Y;
         jeu = _jeu;
         imgIcons = new HashMap<String,ImageIcon>();
         chargerLesIcones();
@@ -62,18 +64,18 @@ public class VueControleur extends JFrame implements Observer {
 
 
     private void chargerLesIcones() {
-        imgIcons.put("ProfIdle",chargerIcone("Images/profIdle01.png"));
-       // imgIcons.put("ProfClimb",chargerIcone("Images/profClimb.png"));
-       // imgIcons.put("ProfDead",chargerIcone("Images/profDead.png"));
+        imgIcons.put("HerosIdle",chargerIcone("Images/herosIdle.png"));
+        imgIcons.put("HerosClimb",chargerIcone("Images/herosClimb.png"));
+        imgIcons.put("HerosDead",chargerIcone("Images/herosDead.png"));
         imgIcons.put("Mur",chargerIcone("Images/mur.png"));
         imgIcons.put("Corde",chargerIcone("Images/corde.png"));
-      //  imgIcons.put("Bombe",chargerIcone("Images/bombe02.png"));
-      //  imgIcons.put("Ennemi",chargerIcone("Images/ennemiIdle01.png"));
-      //  imgIcons.put("Navet",chargerIcone("Images/navet.png"));
-        imgIcons.put("BasColonne",chargerIcone("Images/basColonne.png"));
-        imgIcons.put("MilieuColonne",chargerIcone("Images/milieuColonne.png"));
-        imgIcons.put("HautColonne",chargerIcone("Images/hautColonne.png"));
-        imgIcons.put("PlateformeHoriz",chargerIcone("Images/plateformeHorizontal.png"));
+        imgIcons.put("Bombe",chargerIcone("Images/bombe.png"));
+        imgIcons.put("Ennemi",chargerIcone("Images/ennemiIdle.png"));
+        imgIcons.put("Navet",chargerIcone("Images/navet.png"));
+        imgIcons.put("ColonneBas",chargerIcone("Images/colonneBas.png"));
+        imgIcons.put("ColonneMilieu",chargerIcone("Images/colonneMilieu.png"));
+        imgIcons.put("ColonneHaut",chargerIcone("Images/colonneHaut.png"));
+        imgIcons.put("PlateformeHoriz",chargerIcone("Images/plateformeHoriz.png"));
         imgIcons.put("CaseVide",chargerIcone("Images/caseVide.png"));
     }
 
@@ -92,7 +94,7 @@ public class VueControleur extends JFrame implements Observer {
 
     private void placerLesComposantsGraphiques() {
         setTitle("Gyromite");
-        setSize(400, 400);
+        setSize(sizeX*sizeImg, sizeY*sizeImg);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // permet de terminer l'application à la fermeture de la fenêtre
 
         JComponent grilleJLabels = new JPanel(new GridLayout(sizeY, sizeX)); // grilleJLabels va contenir les cases graphiques et les positionner sous la forme d'une grille
@@ -118,25 +120,32 @@ public class VueControleur extends JFrame implements Observer {
         for (int x = 0; x < sizeX; x++) {
             for (int y = 0; y < sizeY; y++) {
                 Entite e = jeu.getEntite(x, y);
-
                 if (e instanceof Mur) {
                     tabJLabel[x][y].setIcon(imgIcons.get("Mur"));
-                } else if (e instanceof CaseNormale) {
+                } else if (e instanceof CaseVide) {
                     tabJLabel[x][y].setIcon(imgIcons.get("CaseVide"));
+                }else if (e instanceof Navet) {
+                    tabJLabel[x][y].setIcon(imgIcons.get("Navet"));
+                }else if (e instanceof Corde) {
+                    tabJLabel[x][y].setIcon(imgIcons.get("Corde"));
+                }else if (e instanceof Bombe) {
+                    tabJLabel[x][y].setIcon(imgIcons.get("Bombe"));
+                }else if (e instanceof PoutreHorizontal) {
+                    tabJLabel[x][y].setIcon(imgIcons.get("PlateformeHoriz"));
                 }else if(e instanceof  Colonne){
                     if(! (jeu.getEntite(x,y-1) instanceof  Colonne))
-                        tabJLabel[x][y].setIcon((imgIcons.get("HautColonne")));
+                        tabJLabel[x][y].setIcon((imgIcons.get("ColonneHaut")));
                     else if(!(jeu.getEntite(x,y+1) instanceof  Colonne))
-                        tabJLabel[x][y].setIcon((imgIcons.get("BasColonne")));
+                        tabJLabel[x][y].setIcon((imgIcons.get("ColonneBas")));
                     else
-                        tabJLabel[x][y].setIcon((imgIcons.get("MilieuColonne")));
+                        tabJLabel[x][y].setIcon((imgIcons.get("ColonneMilieu")));
                 }
             }
         }
 
 
 
-        tabJLabel[jeu.getHeros().getX()][jeu.getHeros().getY()].setIcon(imgIcons.get("ProfIdle"));
+        tabJLabel[jeu.getHeros().getX()][jeu.getHeros().getY()].setIcon(imgIcons.get("HerosIdle"));
 
     }
 

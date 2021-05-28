@@ -22,5 +22,4 @@ public  class CaseNormale  extends EntiteStatique {
     public boolean traversable() {
         return true;
     }
-
 }

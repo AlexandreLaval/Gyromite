@@ -20,8 +20,6 @@ public  class Bombe extends EntiteStatique{
 
     @Override
     public boolean traversable() {
-        return false;
+        return true;
     }
-
-
 }

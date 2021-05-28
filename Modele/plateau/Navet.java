@@ -23,6 +23,4 @@ public class Navet extends EntiteStatique {
     public boolean traversable() {
         return true;
     }
-
-
 }

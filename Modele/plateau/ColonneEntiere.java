@@ -14,6 +14,11 @@ public class ColonneEntiere extends Entite{
     }
 
     @Override
+    public boolean traversable() {
+        return false;
+    }
+
+    @Override
     public boolean peutEtreEcrase() {
         return false;
     }
@@ -25,11 +30,6 @@ public class ColonneEntiere extends Entite{
 
     @Override
     public boolean peutPermettreDeMonterDescendre() {
-        return false;
-    }
-
-    @Override
-    public boolean traversable() {
         return false;
     }
 

@@ -14,10 +14,9 @@ public class Jeu  extends Observable implements Runnable {
 
     private int pause = 200; // période de rafraichissement
 
-    private HashMap<Entite, Point> carte = new HashMap<>();
-
     private Heros heros;
 
+    private HashMap<Entite, Point> carte = new HashMap<>();
     private Entite[][] grilleEntites = new Entite[SIZE_X][SIZE_Y];
 
     public Jeu() {
@@ -56,6 +55,8 @@ public class Jeu  extends Observable implements Runnable {
         for (int y = 1; y < 9; y++) {
             addEntite(new Mur(this), 0, y);
             addEntite(new Mur(this), 19, y);
+            addEntite(new Mur(this), 0, y);
+            addEntite(new Mur(this), 19, y);
         }
 
         addEntite(new Mur(this), 2, 6);
@@ -83,7 +84,7 @@ public class Jeu  extends Observable implements Runnable {
         for (int x = 0; x < SIZE_X; x++) {
             for (int y = 0; y < SIZE_Y; y++) {
                 if (grilleEntites[x][y] == null) {
-                    grilleEntites[x][y] = new CaseNormale(this);
+                    grilleEntites[x][y] = new CaseVide(this);
                 }
             }
         }
@@ -118,9 +119,7 @@ public class Jeu  extends Observable implements Runnable {
     private void addEntite(Entite e, int x, int y) {
         grilleEntites[x][y] = e;
     }
-
     private void addColonne(Colonne col){
         grilleEntites[col.getX()][col.getY()] = col;
     }
-
 }
