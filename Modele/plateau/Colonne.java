@@ -1,8 +1,11 @@
 package Modele.plateau;
 
 public class Colonne extends EntiteDynamique{
+    ColonneType colType;
 
-    public Colonne(Jeu _jeu) { super(_jeu);}
+    public Colonne(Jeu _jeu, ColonneType colonneType) {
+        super(_jeu);
+        colType = colonneType;}
 
     @Override
     public boolean traversable() {
@@ -22,6 +25,10 @@ public class Colonne extends EntiteDynamique{
     @Override
     public boolean peutPermettreDeMonterDescendre() {
         return false;
+    }
+
+    public ColonneType getColonneType(){
+        return colType;
     }
 
 

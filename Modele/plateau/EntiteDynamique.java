@@ -3,15 +3,48 @@ package Modele.plateau;
 
 import Modele.deplacements.Direction;
 
-public abstract class EntiteDynamique extends Entite{
+public abstract class EntiteDynamique extends Entite {
 
-    public EntiteDynamique(Jeu _jeu){super(_jeu);}
+    private Direction faceDirection = Direction.Droite;
 
-    public boolean avancerDirectionChoisie(Direction direction){
-        return jeu.deplacerEntite(this,direction);
+    private Entite casePrecedente;
+
+    private Direction directionCourante;
+
+    public EntiteDynamique(Jeu _jeu) {
+        super(_jeu);
     }
-/*
-    public Entite regarderDansLaDirection(Direction direction){
 
-    }*/
+    public Direction getDirectionCourante() {
+        return this.directionCourante;
+    }
+
+    public void setDirectionCourante(Direction directionCourante) {
+        this.directionCourante = directionCourante;
+        if (directionCourante == Direction.Droite) {
+            faceDirection = Direction.Droite;
+        } else if (directionCourante == Direction.Gauche) {
+            faceDirection = Direction.Gauche;
+        }
+    }
+
+    public Entite getCasePrecedente() {
+        return casePrecedente;
+    }
+
+    public void setCasePrecedente(Entite entite) {
+        casePrecedente = entite;
+    }
+
+    public Direction getFaceDirection() {
+        return faceDirection;
+    }
+
+    public boolean avancerDirectionChoisie(Direction direction) {
+        return jeu.deplacerEntite(this, direction);
+    }
+
+    public Entite regarderDansLaDirection(Direction d) {
+        return jeu.regarderDansLaDirection(this, d);
+    }
 }

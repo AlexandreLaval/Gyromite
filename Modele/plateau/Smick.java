@@ -1,15 +1,19 @@
 package Modele.plateau;
 
-public class Enemy extends EntiteDynamique{
+import Modele.deplacements.Direction;
 
-    public Enemy(Jeu _jeu){
+public class Smick extends EntiteDynamique{
+
+
+    public Smick(Jeu _jeu, Direction direction, Entite casePrecedente) {
         super(_jeu);
-
+        this.setDirectionCourante(direction);
+        this.setCasePrecedente(casePrecedente);
     }
 
     @Override
     public boolean traversable() {
-        return false;
+        return true;
     }
 
     @Override

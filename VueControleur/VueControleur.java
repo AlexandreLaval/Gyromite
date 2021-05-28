@@ -15,13 +15,15 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 
 
+import Modele.deplacements.Controle4Directions;
+import Modele.deplacements.Direction;
 import Modele.plateau.*;
 
 
-/** Cette classe a deux fonctions :
- *  (1) Vue : proposer une représentation graphique de l'application (cases graphiques, etc.)
- *  (2) Controleur : écouter les évènements clavier et déclencher le traitement adapté sur le modèle (flèches direction, etc.))
- *
+/**
+ * Cette classe a deux fonctions :
+ * (1) Vue : proposer une représentation graphique de l'application (cases graphiques, etc.)
+ * (2) Controleur : écouter les évènements clavier et déclencher le traitement adapté sur le modèle (flèches direction, etc.))
  */
 public class VueControleur extends JFrame implements Observer {
     private final Jeu jeu; // référence sur une classe de modèle : permet d'accéder aux données du modèle pour le rafraichissement, permet de communiquer les actions clavier (ou souris)
@@ -32,7 +34,7 @@ public class VueControleur extends JFrame implements Observer {
     private final int sizeImg = 28;
 
     // icones affichées dans la grille
-    private HashMap<String,ImageIcon>  imgIcons;
+    private HashMap<String, ImageIcon> imgIcons;
 
     private JLabel[][] tabJLabel; // cases graphique (au moment du rafraichissement, chaque case va être associée à une icône, suivant ce qui est présent dans le modèle)
 
@@ -41,7 +43,7 @@ public class VueControleur extends JFrame implements Observer {
         sizeX = Jeu.SIZE_X;
         sizeY = Jeu.SIZE_Y;
         jeu = _jeu;
-        imgIcons = new HashMap<String,ImageIcon>();
+        imgIcons = new HashMap<String, ImageIcon>();
         chargerLesIcones();
         placerLesComposantsGraphiques();
         ajouterEcouteurClavier();
@@ -51,11 +53,19 @@ public class VueControleur extends JFrame implements Observer {
         addKeyListener(new KeyAdapter() { // new KeyAdapter() { ... } est une instance de classe anonyme, il s'agit d'un objet qui correspond au controleur dans MVC
             @Override
             public void keyPressed(KeyEvent e) {
-                switch(e.getKeyCode()) {  // on regarde quelle touche a été pressée
-                    case KeyEvent.VK_LEFT : jeu.getHeros().gauche(); break;
-                    case KeyEvent.VK_RIGHT : jeu.getHeros().droite();break;
-                    case KeyEvent.VK_DOWN : jeu.getHeros().bas(); break;
-                    case KeyEvent.VK_UP : jeu.getHeros().haut(); break;
+                switch (e.getKeyCode()) {  // on regarde quelle touche a été pressée
+                    case KeyEvent.VK_LEFT:
+                        Controle4Directions.getInstance().setDirectionCourante(Direction.Gauche);
+                        break;
+                    case KeyEvent.VK_RIGHT:
+                        Controle4Directions.getInstance().setDirectionCourante(Direction.Droite);
+                        break;
+                    case KeyEvent.VK_DOWN:
+                        Controle4Directions.getInstance().setDirectionCourante(Direction.Bas);
+                        break;
+                    case KeyEvent.VK_UP:
+                        Controle4Directions.getInstance().setDirectionCourante(Direction.Haut);
+                        break;
                 }
             }
         });
@@ -63,19 +73,22 @@ public class VueControleur extends JFrame implements Observer {
 
 
     private void chargerLesIcones() {
-        imgIcons.put("HerosIdle",chargerIcone("Images/herosIdle.png"));
-        imgIcons.put("HerosClimb",chargerIcone("Images/herosClimb.png"));
-        imgIcons.put("HerosDead",chargerIcone("Images/herosDead.png"));
-        imgIcons.put("Mur",chargerIcone("Images/mur.png"));
-        imgIcons.put("Corde",chargerIcone("Images/corde.png"));
-        imgIcons.put("Bombe",chargerIcone("Images/bombe.png"));
-        imgIcons.put("Ennemi",chargerIcone("Images/ennemiIdle.png"));
-        imgIcons.put("Navet",chargerIcone("Images/navet.png"));
-        imgIcons.put("ColonneBas",chargerIcone("Images/colonneBas.png"));
-        imgIcons.put("ColonneMilieu",chargerIcone("Images/colonneMilieu.png"));
-        imgIcons.put("ColonneHaut",chargerIcone("Images/colonneHaut.png"));
-        imgIcons.put("PlateformeHoriz",chargerIcone("Images/plateformeHoriz.png"));
-        imgIcons.put("CaseVide",chargerIcone("Images/caseVide.png"));
+        imgIcons.put("HerosIdleD", chargerIcone("Images/herosIdleDroite.png"));
+        imgIcons.put("HerosIdleG", chargerIcone("Images/herosIdleGauche.png"));
+        imgIcons.put("HerosClimb", chargerIcone("Images/herosClimb.png"));
+        imgIcons.put("HerosDead", chargerIcone("Images/herosDead.png"));
+        imgIcons.put("Mur", chargerIcone("Images/mur.png"));
+        imgIcons.put("Corde", chargerIcone("Images/corde.png"));
+        imgIcons.put("Bombe", chargerIcone("Images/bombe.png"));
+        imgIcons.put("Navet", chargerIcone("Images/navet.png"));
+        imgIcons.put("ColonneBas", chargerIcone("Images/colonneBas.png"));
+        imgIcons.put("ColonneMilieu", chargerIcone("Images/colonneMilieu.png"));
+        imgIcons.put("ColonneHaut", chargerIcone("Images/colonneHaut.png"));
+        imgIcons.put("PlateformeHoriz", chargerIcone("Images/plateformeHoriz.png"));
+        imgIcons.put("CaseVide", chargerIcone("Images/caseVide.png"));
+        imgIcons.put("SmickClimb", chargerIcone("Images/smickClimb.png"));
+        imgIcons.put("SmickIdleD", chargerIcone("Images/smickIdleDroite.png"));
+        imgIcons.put("SmickIdleG", chargerIcone("Images/smickIdleGauche.png"));
     }
 
     private ImageIcon chargerIcone(String urlIcone) {
@@ -93,7 +106,7 @@ public class VueControleur extends JFrame implements Observer {
 
     private void placerLesComposantsGraphiques() {
         setTitle("Gyromite");
-        setSize(sizeX*sizeImg, sizeY*sizeImg);
+        setSize(sizeX * sizeImg, sizeY * sizeImg);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // permet de terminer l'application à la fermeture de la fenêtre
 
         JComponent grilleJLabels = new JPanel(new GridLayout(sizeY, sizeX)); // grilleJLabels va contenir les cases graphiques et les positionner sous la forme d'une grille
@@ -123,35 +136,42 @@ public class VueControleur extends JFrame implements Observer {
                     tabJLabel[x][y].setIcon(imgIcons.get("Mur"));
                 } else if (e instanceof CaseVide) {
                     tabJLabel[x][y].setIcon(imgIcons.get("CaseVide"));
-                }else if (e instanceof Navet) {
+                } else if (e instanceof Navet) {
                     tabJLabel[x][y].setIcon(imgIcons.get("Navet"));
-                }else if (e instanceof Corde) {
+                } else if (e instanceof Corde) {
                     tabJLabel[x][y].setIcon(imgIcons.get("Corde"));
-                }else if (e instanceof Bombe) {
+                } else if (e instanceof Bombe) {
                     tabJLabel[x][y].setIcon(imgIcons.get("Bombe"));
-                }else if (e instanceof PoutreHorizontal) {
+                } else if (e instanceof PoutreHorizontal) {
                     tabJLabel[x][y].setIcon(imgIcons.get("PlateformeHoriz"));
+                } else if (e instanceof Heros) {
+                    if (((Heros) e).getCasePrecedente() instanceof Corde) {
+                        tabJLabel[x][y].setIcon(imgIcons.get("HerosClimb"));
+                    } else {
+                        if(((Heros) e).getFaceDirection()     == Direction.Droite) {
+                            tabJLabel[x][y].setIcon(imgIcons.get("HerosIdleD"));
+                        }
+                        else if(((Heros) e).getDirectionCourante() == Direction.Gauche){
+                            tabJLabel[x][y].setIcon(imgIcons.get("HerosIdleG"));
+                        }
+                    }
+                } else if (e instanceof Smick) {
+                    if (((Smick) e).getCasePrecedente() instanceof Corde) {
+                        tabJLabel[x][y].setIcon(imgIcons.get("SmickClimb"));
+                    } else {
+                        if (((Smick) e).getFaceDirection() == Direction.Droite){
+                            tabJLabel[x][y].setIcon(imgIcons.get("SmickIdleD"));
+                        } else if(((Smick) e).getFaceDirection() == Direction.Gauche){
+                            tabJLabel[x][y].setIcon(imgIcons.get("SmickIdleG"));
+                        }
+                    }
                 }
             }
         }
-
-
-
-        tabJLabel[jeu.getHeros().getX()][jeu.getHeros().getY()].setIcon(imgIcons.get("HerosIdle"));
-
     }
 
     @Override
     public void update(Observable o, Object arg) {
         mettreAJourAffichage();
-        /*
-        SwingUtilities.invokeLater(new Runnable() {
-                    @Override
-                    public void run() {
-                        mettreAJourAffichage();
-                    }
-                });
-        */
-
     }
 }
