@@ -1,5 +1,10 @@
 package Modele.deplacements;
 
-public class Colonne {
+public class Colonne extends RealisateurDeplacement{
 
+
+    @Override
+    protected boolean isOkToRealiserDeplacement() {
+        return false;
+    }
 }
