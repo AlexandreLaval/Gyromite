@@ -30,44 +30,6 @@ public class IA extends RealisateurDeplacement {
         }
     }
 
-
-    @Override
-    protected boolean realiserDeplacement() {
-        boolean realiserDeplacement = false;
-        for (EntiteDynamique entite : lstEntitesDynamiques) {
-            Direction directionCourante = entite.getDirectionCourante();
-            Entite entiteObservee = entite.regarderDansLaDirection(directionCourante);
-            if (entiteObservee != null && entiteObservee.checkSiEntiteDessousPeutServirDeSupport()) {
-                if (entiteObservee.traversable()) {
-                    switch (directionCourante) {
-                        case Haut, Bas:
-                            if (entiteObservee.traversable()) {
-                                if (entiteObservee.peutPermettreDeMonterDescendre()) {
-                                    if (entite.avancerDirectionChoisie(directionCourante)) {
-                                        realiserDeplacement = true;
-                                    }
-                                }
-                            }
-                            break;
-                        case Droite, Gauche:
-                            if (entiteObservee.traversable()) {
-                                if (entite.avancerDirectionChoisie(directionCourante)) {
-                                    realiserDeplacement = true;
-                                }
-                            }
-                            break;
-                    }
-                } else {
-                    changeDirection(entite);
-                }
-            } else {
-                changeDirection(entite);
-            }
-        }
-
-        return realiserDeplacement;
-    }
-
     public void changeDirection(EntiteDynamique entiteDynamique) {
         Direction temp = randomDirection();
         if (temp != entiteDynamique.getDirectionCourante()) {
@@ -75,5 +37,45 @@ public class IA extends RealisateurDeplacement {
         } else {
             changeDirection(entiteDynamique);
         }
+    }
+
+    @Override
+    protected boolean realiserDeplacement() {
+        boolean realiserDeplacement = false;
+        for (EntiteDynamique entite : lstEntitesDynamiques) {
+            Direction directionCourante = entite.getDirectionCourante();
+            Entite entiteObservee = entite.regarderDansLaDirection(directionCourante);
+            if (entiteObservee != null && entiteObservee.traversable()) {
+                switch (directionCourante) {
+                    case Haut, Bas:
+                        if (entiteObservee.peutPermettreDeMonterDescendre()) {
+                            if (entite.avancerDirectionChoisie(directionCourante)) {
+                                realiserDeplacement = true;
+                            }
+                        }
+                        else {
+                            changeDirection(entite);
+                        }
+                        break;
+                    case Droite, Gauche:
+                        if (entiteObservee.checkSiEntiteDessousPeutServirDeSupport()) {
+                            if (entite.avancerDirectionChoisie(directionCourante)) {
+                                realiserDeplacement = true;
+                            }
+                        }else if (entiteObservee.peutPermettreDeMonterDescendre()) {
+                            if (entite.avancerDirectionChoisie(directionCourante)) {
+                                realiserDeplacement = true;
+                            }
+                        }
+                        else {
+                            changeDirection(entite);
+                        }
+                        break;
+                }
+            } else {
+                changeDirection(entite);
+            }
+        }
+        return realiserDeplacement;
     }
 }
