@@ -73,19 +73,22 @@ public class VueControleur extends JFrame implements Observer {
 
 
     private void chargerLesIcones() {
-        imgIcons.put("HerosIdle", chargerIcone("Images/herosIdle.png"));
+        imgIcons.put("HerosIdleD", chargerIcone("Images/herosIdleDroite.png"));
+        imgIcons.put("HerosIdleG", chargerIcone("Images/herosIdleGauche.png"));
         imgIcons.put("HerosClimb", chargerIcone("Images/herosClimb.png"));
         imgIcons.put("HerosDead", chargerIcone("Images/herosDead.png"));
         imgIcons.put("Mur", chargerIcone("Images/mur.png"));
         imgIcons.put("Corde", chargerIcone("Images/corde.png"));
         imgIcons.put("Bombe", chargerIcone("Images/bombe.png"));
-        imgIcons.put("Ennemi", chargerIcone("Images/enemyIdle.png"));
         imgIcons.put("Navet", chargerIcone("Images/navet.png"));
         imgIcons.put("ColonneBas", chargerIcone("Images/colonneBas.png"));
         imgIcons.put("ColonneMilieu", chargerIcone("Images/colonneMilieu.png"));
         imgIcons.put("ColonneHaut", chargerIcone("Images/colonneHaut.png"));
         imgIcons.put("PlateformeHoriz", chargerIcone("Images/plateformeHoriz.png"));
         imgIcons.put("CaseVide", chargerIcone("Images/caseVide.png"));
+        imgIcons.put("SmickClimb", chargerIcone("Images/smickClimb.png"));
+        imgIcons.put("SmickIdleD", chargerIcone("Images/smickIdleDroite.png"));
+        imgIcons.put("SmickIdleG", chargerIcone("Images/smickIdleGauche.png"));
     }
 
     private ImageIcon chargerIcone(String urlIcone) {
@@ -142,18 +145,29 @@ public class VueControleur extends JFrame implements Observer {
                 } else if (e instanceof PoutreHorizontal) {
                     tabJLabel[x][y].setIcon(imgIcons.get("PlateformeHoriz"));
                 } else if (e instanceof Heros) {
-                    if (jeu.getCasePrecedente() instanceof Corde) {
+                    if (((Heros) e).getCasePrecedente() instanceof Corde) {
                         tabJLabel[x][y].setIcon(imgIcons.get("HerosClimb"));
                     } else {
-                        tabJLabel[x][y].setIcon(imgIcons.get("HerosIdle"));
+                        if(((Heros) e).getFaceDirection()     == Direction.Droite) {
+                            tabJLabel[x][y].setIcon(imgIcons.get("HerosIdleD"));
+                        }
+                        else if(((Heros) e).getDirectionCourante() == Direction.Gauche){
+                            tabJLabel[x][y].setIcon(imgIcons.get("HerosIdleG"));
+                        }
+                    }
+                } else if (e instanceof Smick) {
+                    if (((Smick) e).getCasePrecedente() instanceof Corde) {
+                        tabJLabel[x][y].setIcon(imgIcons.get("SmickClimb"));
+                    } else {
+                        if (((Smick) e).getFaceDirection() == Direction.Droite){
+                            tabJLabel[x][y].setIcon(imgIcons.get("SmickIdleD"));
+                        } else if(((Smick) e).getFaceDirection() == Direction.Gauche){
+                            tabJLabel[x][y].setIcon(imgIcons.get("SmickIdleG"));
+                        }
                     }
                 }
             }
         }
-
-
-        //  tabJLabel[jeu.getHeros().getX()][jeu.getHeros().getY()].setIcon(imgIcons.get("HerosIdle"));
-
     }
 
     @Override

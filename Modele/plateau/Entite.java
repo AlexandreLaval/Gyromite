@@ -11,4 +11,7 @@ public abstract class Entite {
     public abstract boolean peutServirDeSupport();
     public abstract boolean peutPermettreDeMonterDescendre();
 
+    public boolean checkSiEntiteDessousPeutServirDeSupport(){
+        return jeu.checkSiEntiteDessousPeutServirDeSupport(this);
+    }
 }

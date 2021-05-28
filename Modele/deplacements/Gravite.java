@@ -1,9 +1,31 @@
 package Modele.deplacements;
 
-public  class Gravite extends RealisateurDeplacement{
+import Modele.plateau.Entite;
+import Modele.plateau.EntiteDynamique;
+
+public class Gravite extends RealisateurDeplacement {
+
+    private static Gravite gravite;
+
+    public static Gravite getInstance(){
+        if(gravite == null){
+            gravite = new Gravite();
+        }
+        return gravite;
+    }
 
     @Override
     protected boolean realiserDeplacement() {
-        return false;
+        boolean realiserDeplacement = false;
+        for (EntiteDynamique entite : lstEntitesDynamiques) {
+            Entite entiteObservee = entite.regarderDansLaDirection(Direction.Bas);
+
+            if (!entiteObservee.peutServirDeSupport() && !entiteObservee.peutPermettreDeMonterDescendre()) {
+                if (entite.avancerDirectionChoisie(Direction.Bas)) {
+                    realiserDeplacement = true;
+                }
+            }
+        }
+        return realiserDeplacement;
     }
 }

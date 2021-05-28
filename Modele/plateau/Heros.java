@@ -20,31 +20,20 @@ public class Heros extends EntiteDynamique{
         return y;
     }
 
-    public Heros(Jeu _jeu, int _x, int _y) {
+    public Heros(Jeu _jeu, int _x, int _y, Entite casePrecedente) {
         super(_jeu);
         x = _x;
         y = _y;
-    }
-
-
-    private boolean traversable(int x, int y) {
-
-        if (x >0 && x < jeu.SIZE_X && y > 0 && y < jeu.SIZE_Y) {
-            return jeu.getEntite(x, y).traversable();
-        } else {
-            return false;
-        }
+        setCasePrecedente(casePrecedente);
     }
 
     @Override
     public boolean traversable() {
-        return false;
+        return true;
     }
 
     @Override
-    public boolean peutEtreEcrase() {
-        return true;
-    }
+    public boolean peutEtreEcrase() { return true; }
 
     @Override
     public boolean peutServirDeSupport() {

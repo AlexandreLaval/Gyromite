@@ -1,8 +1,6 @@
 package Modele.plateau;
 
-import Modele.deplacements.Controle4Directions;
-import Modele.deplacements.Direction;
-import Modele.deplacements.Ordonnanceur;
+import Modele.deplacements.*;
 
 import java.awt.*;
 import java.io.BufferedReader;
@@ -19,18 +17,20 @@ public class Jeu {
 
     String niveauReader;
 
-    private Ordonnanceur ordonnanceur = new Ordonnanceur(this);
+    private final Ordonnanceur ordonnanceur = new Ordonnanceur(this);
 
     private Heros heros;
 
     private HashMap<Entite, Point> carte = new HashMap<>();
     private Entite[][] grilleEntites = new Entite[SIZE_X][SIZE_Y];
 
-    public Jeu() {
-        chargerNiveau();
-    }
+    private boolean isGameOver = false;
+    private boolean isGameWin = false;
 
-    public Ordonnanceur getOrdonnanceur() { return ordonnanceur; }
+
+    public Ordonnanceur getOrdonnanceur() {
+        return ordonnanceur;
+    }
 
     public Heros getHeros() {
         return heros;
@@ -40,7 +40,10 @@ public class Jeu {
         return grilleEntites;
     }
 
-    public Entite casePrecedente = new CaseVide(this);
+    public Jeu() {
+        chargerNiveau();
+    }
+
 
     public Entite getEntite(int x, int y) {
         if (x < 0 || x >= SIZE_X || y < 0 || y >= SIZE_Y) {
@@ -81,6 +84,18 @@ public class Jeu {
             for (int x = 0; x < Jeu.SIZE_X; x++) {
                 int n = niveauReader.charAt(y * Jeu.SIZE_X + x);
                 switch (n) {
+                    case 'A':
+                        heros = new Heros(this, x, y, new CaseVide(this));
+                        addEntite(heros, x, y);
+                        Controle4Directions.getInstance().addEntiteDynamique(heros);
+                        Gravite.getInstance().addEntiteDynamique(heros);
+                        break;
+                    case 'S':
+                        Smick smick = new Smick(this, Direction.Droite, new CaseVide(this));
+                        addEntite(smick, x, y);
+                        Gravite.getInstance().addEntiteDynamique(smick);
+                        IA.getInstance().addEntiteDynamique(smick);
+                        break;
                     case 'W':
                         addEntite(new Mur(this), x, y);
                         break;
@@ -109,19 +124,19 @@ public class Jeu {
                         addEntite(new Colonne(this, ColonneType.Bas), x, y);
                         break;
                 }
+
             }
         }
-        heros = new Heros(this, 4, 4);
-        addEntite(heros,4,4);
-        Controle4Directions.getInstance().addEntiteDynamique(heros);
         getOrdonnanceur().addDep(Controle4Directions.getInstance());
+        getOrdonnanceur().addDep(Gravite.getInstance());
+        getOrdonnanceur().addDep(IA.getInstance());
     }
 
     public Entite regarderDansLaDirection(Entite entite, Direction direction) {
-        Point positionEntite = carte.get(entite);// new Point(getHeros().getX(),getHeros().getY());
+        Point positionEntite = carte.get(entite);
 
         Entite entiteRegardee = null;
-        Point coordEntiteRegardee = new Point(0,0);
+        Point coordEntiteRegardee = new Point(0, 0);
         switch (direction) {
             case Droite:
                 coordEntiteRegardee.x = positionEntite.x + 1;
@@ -147,50 +162,60 @@ public class Jeu {
         return entiteRegardee;
     }
 
+    public boolean checkSiEntiteDessousPeutServirDeSupport(Entite entite) {
+        boolean isEntitePlateforme = false;
+
+        Point coordEntiteRegardee = new Point(carte.get(entite).x, carte.get(entite).y + 1);
+        if (estDansGrille(coordEntiteRegardee)) {
+            isEntitePlateforme = grilleEntites[coordEntiteRegardee.x][coordEntiteRegardee.y].peutServirDeSupport() ||
+                    grilleEntites[coordEntiteRegardee.x][coordEntiteRegardee.y].peutPermettreDeMonterDescendre();
+        }
+        return isEntitePlateforme;
+    }
+
 
     public boolean deplacerEntite(Entite entite, Direction direction) {
         int px = carte.get(entite).x;
         int py = carte.get(entite).y;
 
         boolean deplacementOK = false;
-
-        if (entite instanceof Heros) {
+        if(entite instanceof EntiteDynamique) {
+            EntiteDynamique eD = (EntiteDynamique) entite;
             switch (direction) {
                 case Droite:
-                        setCasePrecedente(entite, px, py);
-                        replaceEntite(entite, px + 1, py);
-                        deplacementOK = true;
+                    setCasePrecedente(eD, px, py);
+                    replaceEntite(eD, px + 1, py);
+                    deplacementOK = true;
                     break;
                 case Gauche:
-                        setCasePrecedente(entite, px, py);
-                        replaceEntite(entite, px - 1, py);
-                        deplacementOK = true;
+                    setCasePrecedente(eD, px, py);
+                    replaceEntite(eD, px - 1, py);
+                    deplacementOK = true;
 
                     break;
                 case Haut:
-                        setCasePrecedente(entite, px, py);
-                        replaceEntite(entite, px, py - 1);
-                        deplacementOK = true;
-
+                    setCasePrecedente(eD, px, py);
+                    replaceEntite(eD, px, py - 1);
+                    deplacementOK = true;
                     break;
                 case Bas:
-                        setCasePrecedente(entite, px, py);
-                        replaceEntite(entite, px, py + 1);
-                        deplacementOK = true;
+                    setCasePrecedente(eD, px, py);
+                    replaceEntite(eD, px, py + 1);
+                    deplacementOK = true;
                     break;
             }
-        }
-        if (entite instanceof Colonne) {
-            if (direction == Direction.Bas && py + 1 < SIZE_Y && grilleEntites[px][py - 1].traversable()) {
-                setCasePrecedente(entite, px, py);
-                replaceEntite(entite, px, py + 1);
-                deplacementOK = true;
-            } else if (direction == Direction.Haut && py - 1 < SIZE_Y && grilleEntites[px][py - 1].traversable()) {
-                setCasePrecedente(entite, px, py);
-                replaceEntite(entite, px, py - 1);
-                deplacementOK = true;
-            }
-
+/*
+            if (entite instanceof Colonne) {
+                if (direction == Direction.Bas && py + 1 < SIZE_Y && grilleEntites[px][py - 1].traversable()) {
+                    setCasePrecedente(entite, px, py);
+                    replaceEntite(entite, px, py + 1);
+                    deplacementOK = true;
+                } else if (direction == Direction.Haut && py - 1 < SIZE_Y && grilleEntites[px][py - 1].traversable()) {
+                    setCasePrecedente(entite, px, py);
+                    replaceEntite(entite, px, py - 1);
+                    deplacementOK = true;
+                }
+            }*/
         }
         return deplacementOK;
     }
@@ -200,20 +225,24 @@ public class Jeu {
         carte.put(e, new Point(x, y));
     }
 
-    private void setCasePrecedente(Entite e, int x, int y) {
+    private void setCasePrecedente(EntiteDynamique e, int x, int y) {
         carte.remove(e);
-        grilleEntites[x][y] = casePrecedente;
-        carte.put(casePrecedente, new Point(x, y));
+        grilleEntites[x][y] = e.getCasePrecedente();
+        carte.put(e.getCasePrecedente(), new Point(x, y));
     }
 
-    private void replaceEntite(Entite e, int x, int y) {
-        casePrecedente = grilleEntites[x][y];
+    private void replaceEntite(EntiteDynamique e, int x, int y) {
+        e.setCasePrecedente(grilleEntites[x][y]);
         carte.remove(grilleEntites[x][y]);
         grilleEntites[x][y] = e;
         carte.put(e, new Point(x, y));
     }
 
-    public Entite getCasePrecedente(){
-        return casePrecedente;
+    public boolean isGameOver() {
+        return isGameOver;
+    }
+
+    public boolean isGameWin() {
+        return isGameWin;
     }
 }
