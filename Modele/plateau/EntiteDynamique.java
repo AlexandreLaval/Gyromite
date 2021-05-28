@@ -56,4 +56,6 @@ public abstract class EntiteDynamique extends Entite{
     public boolean avancerDirectionChoisie(Direction direction){
         return jeu.isOkToDeplacerEntite(this,direction);
     }
+
+    public Entite regarderDansLaDirection(Direction d) {return jeu.regarderDansLaDirection(this, d);}
 }

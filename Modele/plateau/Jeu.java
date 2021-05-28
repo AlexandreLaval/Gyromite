@@ -1,6 +1,9 @@
 package Modele.plateau;
 
+import Modele.deplacements.Controle4Directions;
+import Modele.deplacements.ControleDeplacementColonne;
 import Modele.deplacements.Direction;
+import Modele.deplacements.Ordonnanceur;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -18,6 +21,10 @@ public class Jeu  extends Observable implements Runnable {
     private int pause = 200; // période de rafraichissement
 
     private Heros heros;
+    private int nbBombe;
+    private int nbVie = 3;
+    private int nbNavet = 3;
+    private int score = 0;
 
     //carte du plateau
     private HashMap<Entite, Point> carte = new HashMap<>();
@@ -133,6 +140,69 @@ public class Jeu  extends Observable implements Runnable {
 
     }
 
+    public Entite regarderDansLaDirection(Entite e, Direction d) {
+        Point positionEntite = carte.get(e);
+        return objetALaPosition(positionEntite);
+    }
+
+    private Entite objetALaPosition(Point p) {
+        Entite EntiteDeRetour = null;
+
+        if(isDansGrille(p)) {
+            EntiteDeRetour = grilleEntites[p.x][p.y];
+
+            if (grilleEntites[p.x][p.y] != null)
+                EntiteDeRetour = grilleEntites[p.x][p.y];
+
+        }
+        return EntiteDeRetour;
+    }
+
+    private boolean isDansGrille(Point p) {
+        return p.x >= 0 && p.x < SIZE_X && p.y >= 0 && p.y < SIZE_Y;
+    }
+
+    private Point trouverPointCible(Point pCourant, Direction dir){
+
+        Point pCible = null;
+
+        switch(dir){
+            case Haut, Z: pCible = new Point(pCourant.x, pCourant.y - 1); break;
+            case Bas, S:pCible = new Point(pCourant.x, pCourant.y +1); break;
+            case Gauche, Q : pCible = new Point(pCourant.x - 1, pCourant.y); break;
+            case Droite, D : pCible = new Point(pCourant.x + 1, pCourant.y); break;
+        }
+
+        return pCible;
+    }
+
+    public boolean isGameFinished(){
+        if(nbBombe == 0){
+            // TODO monter de niveau
+            terminerNiveau();
+        }
+        if(nbVie <= 0){
+            addPoint(60 * nbVie);
+            // TODO meilleur score
+            return true;
+        }
+
+        return false;
+    }
+
+    public void terminerNiveau(){
+        //TODO si on peut montrer de niveau
+        nbNavet = 3;
+        Ordonnanceur.clear();
+        carte.clear();
+        Controle4Directions.reset();
+        ControleDeplacementColonne.reset();
+        initialisationDesEntites();
+    }
+
+    public void addPoint(int point){
+        score += point;
+    }
 
     public Heros getHeros() {
         return heros;
@@ -149,11 +219,4 @@ public class Jeu  extends Observable implements Runnable {
         }
         return grilleEntites[x][y];
     }
-
-
-
-
-
-
-
 }
