@@ -1,15 +1,16 @@
 package Modele.plateau;
 
-public class Bot extends EntiteDynamique{
+public class CaseVide extends EntiteStatique {
+    public CaseVide(Jeu _jeu) { super(_jeu); }
 
-    public Bot(Jeu _jeu){
-        super(_jeu);
-
+    @Override
+    public boolean traversable() {
+        return true;
     }
 
     @Override
     public boolean peutEtreEcrase() {
-        return true;
+        return false;
     }
 
     @Override

@@ -5,6 +5,21 @@ public class Bombe extends EntiteStatique{
 
     @Override
     public boolean traversable() {
+        return true;
+    }
+
+    @Override
+    public boolean peutEtreEcrase() {
+        return false;
+    }
+
+    @Override
+    public boolean peutServirDeSupport() {
+        return false;
+    }
+
+    @Override
+    public boolean peutPermettreDeMonterDescendre() {
         return false;
     }
 }

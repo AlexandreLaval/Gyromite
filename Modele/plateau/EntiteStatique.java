@@ -1,13 +1,10 @@
 package Modele.plateau;
 
-public abstract class EntiteStatique {
-    protected Jeu jeu;
+public abstract class EntiteStatique extends Entite {
 
     public EntiteStatique(Jeu _jeu) {
-        jeu = _jeu;
+        super(_jeu);
     }
-
-    public abstract boolean traversable();
 
 
 }
