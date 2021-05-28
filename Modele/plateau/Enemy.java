@@ -1,17 +1,20 @@
 package Modele.plateau;
 
-public class Corde extends EntiteStatique{
+public class Enemy extends EntiteDynamique{
 
-    public Corde(Jeu _jeu){super(_jeu);}
+    public Enemy(Jeu _jeu){
+        super(_jeu);
+
+    }
 
     @Override
     public boolean traversable() {
-        return true;
+        return false;
     }
 
     @Override
     public boolean peutEtreEcrase() {
-        return false;
+        return true;
     }
 
     @Override
@@ -21,6 +24,7 @@ public class Corde extends EntiteStatique{
 
     @Override
     public boolean peutPermettreDeMonterDescendre() {
-        return true;
+        return false;
     }
+
 }

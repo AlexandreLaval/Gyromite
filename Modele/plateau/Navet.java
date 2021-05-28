@@ -9,5 +9,20 @@ public class Navet extends EntiteStatique {
         return true;
     }
 
+    @Override
+    public boolean peutEtreEcrase() {
+        return false;
+    }
+
+    @Override
+    public boolean peutServirDeSupport() {
+        return false;
+    }
+
+    @Override
+    public boolean peutPermettreDeMonterDescendre() {
+        return false;
+    }
+
 
 }

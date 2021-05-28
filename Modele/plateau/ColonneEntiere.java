@@ -14,6 +14,11 @@ public class ColonneEntiere extends EntiteDynamique{
     }
 
     @Override
+    public boolean traversable() {
+        return false;
+    }
+
+    @Override
     public boolean peutEtreEcrase() {
         return false;
     }

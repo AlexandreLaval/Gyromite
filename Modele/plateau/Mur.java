@@ -8,4 +8,19 @@ public class Mur extends EntiteStatique {
         return false;
     }
 
+    @Override
+    public boolean peutEtreEcrase() {
+        return false;
+    }
+
+    @Override
+    public boolean peutServirDeSupport() {
+        return true;
+    }
+
+    @Override
+    public boolean peutPermettreDeMonterDescendre() {
+        return false;
+    }
+
 }
