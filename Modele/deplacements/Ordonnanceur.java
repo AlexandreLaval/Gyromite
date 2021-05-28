@@ -10,7 +10,7 @@ import Modele.plateau.Jeu;
 public class Ordonnanceur extends Observable implements  Runnable {
 
     private Jeu jeu;
-    private ArrayList<RealisateurDeplacement> lstRealDeplacement = new ArrayList<>();
+    private static ArrayList<RealisateurDeplacement> lstRealDeplacement = new ArrayList<>();
 
     public Ordonnanceur(Jeu _jeu){
         jeu = _jeu;
