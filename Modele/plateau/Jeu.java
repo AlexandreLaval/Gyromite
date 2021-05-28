@@ -142,7 +142,7 @@ public class Jeu  extends Observable implements Runnable {
 
     public Entite regarderDansLaDirection(Entite e, Direction d) {
         Point positionEntite = carte.get(e);
-        return objetALaPosition(positionEntite);
+        return objetALaPosition(trouverPointCible(positionEntite,d));
     }
 
     private Entite objetALaPosition(Point p) {
