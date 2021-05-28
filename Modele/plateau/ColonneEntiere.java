@@ -39,7 +39,7 @@ public class ColonneEntiere extends EntiteDynamique{
     }
 
     //va déplacer la colonne entière
-   public void deplacerColonne(Direction direction){
+    public void deplacerColonne(Direction direction){
 
         //faire colonne.vanacerDirectionChoisir avant
    }

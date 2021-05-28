@@ -69,7 +69,7 @@ public class VueControleur extends JFrame implements Observer {
         imgIcons.put("Mur",chargerIcone("Images/mur.png"));
         imgIcons.put("Corde",chargerIcone("Images/corde.png"));
         imgIcons.put("Bombe",chargerIcone("Images/bombe.png"));
-        imgIcons.put("Ennemi",chargerIcone("Images/ennemiIdle.png"));
+        imgIcons.put("Ennemi",chargerIcone("Images/enemyIdle.png"));
         imgIcons.put("Navet",chargerIcone("Images/navet.png"));
         imgIcons.put("ColonneBas",chargerIcone("Images/colonneBas.png"));
         imgIcons.put("ColonneMilieu",chargerIcone("Images/colonneMilieu.png"));
@@ -131,6 +131,8 @@ public class VueControleur extends JFrame implements Observer {
                     tabJLabel[x][y].setIcon(imgIcons.get("Bombe"));
                 }else if (e instanceof PoutreHorizontal) {
                     tabJLabel[x][y].setIcon(imgIcons.get("PlateformeHoriz"));
+                }else if (e instanceof PoutreHorizontal) {
+                    tabJLabel[x][y].setIcon(imgIcons.get("Ennemi"));
                 }
             }
         }
@@ -144,14 +146,5 @@ public class VueControleur extends JFrame implements Observer {
     @Override
     public void update(Observable o, Object arg) {
         mettreAJourAffichage();
-        /*
-        SwingUtilities.invokeLater(new Runnable() {
-                    @Override
-                    public void run() {
-                        mettreAJourAffichage();
-                    }
-                });
-        */
-
     }
 }
