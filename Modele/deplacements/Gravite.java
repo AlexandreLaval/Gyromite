@@ -1,6 +1,7 @@
 package Modele.deplacements;
 
-public class Gravite extends RealisateurDeplacement{
+public  class Gravite extends RealisateurDeplacement{
+
     @Override
     protected boolean realiserDeplacement() {
         return false;

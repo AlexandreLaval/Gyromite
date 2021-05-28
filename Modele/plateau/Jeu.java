@@ -1,6 +1,8 @@
 package Modele.plateau;
 
+import Modele.deplacements.Controle4Directions;
 import Modele.deplacements.Direction;
+import Modele.deplacements.Ordonnanceur;
 
 import java.awt.*;
 import java.io.BufferedReader;
@@ -8,16 +10,16 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.Observable;
 
-public class Jeu extends Observable implements Runnable {
+public class Jeu {
 
     public static final int SIZE_X = 20;
     public static final int SIZE_Y = 15;
 
-    private int pause = 200; // période de rafraichissement
 
     String niveauReader;
+
+    private Ordonnanceur ordonnanceur = new Ordonnanceur(this);
 
     private Heros heros;
 
@@ -28,6 +30,8 @@ public class Jeu extends Observable implements Runnable {
         chargerNiveau();
     }
 
+    public Ordonnanceur getOrdonnanceur() { return ordonnanceur; }
+
     public Heros getHeros() {
         return heros;
     }
@@ -36,12 +40,18 @@ public class Jeu extends Observable implements Runnable {
         return grilleEntites;
     }
 
+    public Entite casePrecedente = new CaseVide(this);
+
     public Entite getEntite(int x, int y) {
         if (x < 0 || x >= SIZE_X || y < 0 || y >= SIZE_Y) {
             // L'entité demandée est en-dehors de la grille
             return null;
         }
         return grilleEntites[x][y];
+    }
+
+    private boolean estDansGrille(Point p) {
+        return p.x >= 0 && p.x < SIZE_X && p.y >= 0 && p.y < SIZE_Y;
     }
 
     public void chargerNiveau() {
@@ -64,7 +74,6 @@ public class Jeu extends Observable implements Runnable {
         }
         initialisationDesEntites();
     }
-
 
     private void initialisationDesEntites() {
 
@@ -103,7 +112,41 @@ public class Jeu extends Observable implements Runnable {
             }
         }
         heros = new Heros(this, 4, 4);
+        addEntite(heros,4,4);
+        Controle4Directions.getInstance().addEntiteDynamique(heros);
+        getOrdonnanceur().addDep(Controle4Directions.getInstance());
     }
+
+    public Entite regarderDansLaDirection(Entite entite, Direction direction) {
+        Point positionEntite = carte.get(entite);// new Point(getHeros().getX(),getHeros().getY());
+
+        Entite entiteRegardee = null;
+        Point coordEntiteRegardee = new Point(0,0);
+        switch (direction) {
+            case Droite:
+                coordEntiteRegardee.x = positionEntite.x + 1;
+                coordEntiteRegardee.y = positionEntite.y;
+                break;
+            case Gauche:
+                coordEntiteRegardee.x = positionEntite.x - 1;
+                coordEntiteRegardee.y = positionEntite.y;
+                break;
+            case Haut:
+                coordEntiteRegardee.x = positionEntite.x;
+                coordEntiteRegardee.y = positionEntite.y - 1;
+                break;
+            case Bas:
+                coordEntiteRegardee.x = positionEntite.x;
+                coordEntiteRegardee.y = positionEntite.y + 1;
+                break;
+        }
+
+        if (estDansGrille(coordEntiteRegardee)) {
+            entiteRegardee = grilleEntites[coordEntiteRegardee.x][coordEntiteRegardee.y];
+        }
+        return entiteRegardee;
+    }
+
 
     public boolean deplacerEntite(Entite entite, Direction direction) {
         int px = carte.get(entite).x;
@@ -114,69 +157,42 @@ public class Jeu extends Observable implements Runnable {
         if (entite instanceof Heros) {
             switch (direction) {
                 case Droite:
-                    if (px + 1 < SIZE_X && grilleEntites[px+1][py].traversable()) {
-                        setCaseVide(entite, px, py);
-                        replaceEntite(entite, px+1, py );
+                        setCasePrecedente(entite, px, py);
+                        replaceEntite(entite, px + 1, py);
                         deplacementOK = true;
-                    }
                     break;
                 case Gauche:
-                    if (px - 1 < SIZE_X && grilleEntites[px-1][py].traversable()) {
-                        setCaseVide(entite, px, py);
-                        replaceEntite(entite, px+1, py );
+                        setCasePrecedente(entite, px, py);
+                        replaceEntite(entite, px - 1, py);
                         deplacementOK = true;
-                    }
+
                     break;
                 case Haut:
-                    if (py - 1 < SIZE_Y && grilleEntites[px][py - 1].traversable()) {
-                        setCaseVide(entite, px, py);
+                        setCasePrecedente(entite, px, py);
                         replaceEntite(entite, px, py - 1);
                         deplacementOK = true;
-                    }
+
                     break;
                 case Bas:
-                    if (py + 1 < SIZE_Y && grilleEntites[px][py + 1].traversable()) {
-                        setCaseVide(entite, px, py);
+                        setCasePrecedente(entite, px, py);
                         replaceEntite(entite, px, py + 1);
                         deplacementOK = true;
-                    }
                     break;
             }
         }
-        if(entite instanceof Colonne){
-            if(direction == Direction.Bas && py + 1 < SIZE_Y && grilleEntites[px][py - 1].traversable()){
-                setCaseVide(entite, px, py);
+        if (entite instanceof Colonne) {
+            if (direction == Direction.Bas && py + 1 < SIZE_Y && grilleEntites[px][py - 1].traversable()) {
+                setCasePrecedente(entite, px, py);
                 replaceEntite(entite, px, py + 1);
                 deplacementOK = true;
-            }
-            else if(direction == Direction.Haut && py - 1 < SIZE_Y && grilleEntites[px][py - 1].traversable()){
-                setCaseVide(entite, px, py);
+            } else if (direction == Direction.Haut && py - 1 < SIZE_Y && grilleEntites[px][py - 1].traversable()) {
+                setCasePrecedente(entite, px, py);
                 replaceEntite(entite, px, py - 1);
                 deplacementOK = true;
             }
 
         }
         return deplacementOK;
-
-    }
-
-    public void start() {
-        new Thread(this).start();
-    }
-
-    public void run() {
-
-        while (true) {
-
-            setChanged();
-            notifyObservers();
-
-            try {
-                Thread.sleep(pause);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
     }
 
     private void addEntite(Entite e, int x, int y) {
@@ -184,15 +200,20 @@ public class Jeu extends Observable implements Runnable {
         carte.put(e, new Point(x, y));
     }
 
-    private void setCaseVide(Entite e, int x, int y) {
+    private void setCasePrecedente(Entite e, int x, int y) {
         carte.remove(e);
-        grilleEntites[x][y] = new CaseVide(this);
-        carte.put(new CaseVide(this), new Point(x, y));
+        grilleEntites[x][y] = casePrecedente;
+        carte.put(casePrecedente, new Point(x, y));
     }
 
     private void replaceEntite(Entite e, int x, int y) {
+        casePrecedente = grilleEntites[x][y];
+        carte.remove(grilleEntites[x][y]);
         grilleEntites[x][y] = e;
         carte.put(e, new Point(x, y));
     }
 
+    public Entite getCasePrecedente(){
+        return casePrecedente;
+    }
 }

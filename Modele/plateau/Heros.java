@@ -26,29 +26,6 @@ public class Heros extends EntiteDynamique{
         y = _y;
     }
 
-    public void droite() {
-        if (traversable(x+1, y)) {
-            x ++;
-        }
-    }
-
-    public void gauche() {
-        if (traversable(x-1, y)) {
-            x --;
-        }
-    }
-
-    public void bas() {
-        if (traversable(x, y+1)) {
-            y ++;
-        }
-    }
-
-    public void haut() {
-        if (traversable(x, y-1)) {
-            y --;
-        }
-    }
 
     private boolean traversable(int x, int y) {
 
