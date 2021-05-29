@@ -96,6 +96,10 @@ public class VueControleur extends JFrame implements Observer {
         imgIcons.put("Vie", chargerIcone("Images/life.png"));
         imgIcons.put("Zero", chargerIcone("Images/zero.png"));
         imgIcons.put("Un", chargerIcone("Images/un.png"));
+        imgIcons.put("Deux", chargerIcone("Images/deux.png"));
+        imgIcons.put("Trois", chargerIcone("Images/trois.png"));
+        imgIcons.put("Quatre", chargerIcone("Images/quatre.png"));
+        imgIcons.put("Cinq", chargerIcone("Images/cinq.png"));
     }
 
     private ImageIcon chargerIcone(String urlIcone) {
@@ -191,6 +195,18 @@ public class VueControleur extends JFrame implements Observer {
                 break;
             case 1:
                 tabJLabel[2][0].setIcon(imgIcons.get("Un"));
+                break;
+            case 2:
+                tabJLabel[2][0].setIcon(imgIcons.get("Deux"));
+                break;
+            case 3:
+                tabJLabel[2][0].setIcon(imgIcons.get("Trois"));
+                break;
+            case 4:
+                tabJLabel[2][0].setIcon(imgIcons.get("Quatre"));
+                break;
+            case 5:
+                tabJLabel[2][0].setIcon(imgIcons.get("Cinq"));
                 break;
         }
 
