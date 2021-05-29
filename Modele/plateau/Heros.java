@@ -12,6 +12,8 @@ public class Heros extends EntiteDynamique{
     private int x;
     private int y;
 
+    private int herosLife = 3;
+
     public int getX() {
         return x;
     }
@@ -19,6 +21,7 @@ public class Heros extends EntiteDynamique{
     public int getY() {
         return y;
     }
+
 
     public Heros(Jeu _jeu, int _x, int _y, Entite casePrecedente) {
         super(_jeu);
@@ -43,5 +46,13 @@ public class Heros extends EntiteDynamique{
     @Override
     public boolean peutPermettreDeMonterDescendre() {
         return false;
+    }
+
+    public int getHerosLife() {
+        return herosLife;
+    }
+
+    public void setHerosLife(int herosLife) {
+        this.herosLife = herosLife;
     }
 }

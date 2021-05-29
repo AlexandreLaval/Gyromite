@@ -2,6 +2,7 @@ package Modele.deplacements;
 
 import Modele.plateau.Entite;
 import Modele.plateau.EntiteDynamique;
+import Modele.plateau.Heros;
 
 import java.util.Random;
 

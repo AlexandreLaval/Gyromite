@@ -89,6 +89,7 @@ public class VueControleur extends JFrame implements Observer {
         imgIcons.put("SmickClimb", chargerIcone("Images/smickClimb.png"));
         imgIcons.put("SmickIdleD", chargerIcone("Images/smickIdleDroite.png"));
         imgIcons.put("SmickIdleG", chargerIcone("Images/smickIdleGauche.png"));
+        imgIcons.put("Vie", chargerIcone("Images/life.png"));
     }
 
     private ImageIcon chargerIcone(String urlIcone) {
@@ -100,7 +101,6 @@ public class VueControleur extends JFrame implements Observer {
             Logger.getLogger(VueControleur.class.getName()).log(Level.SEVERE, null, ex);
             return null;
         }
-
         return new ImageIcon(image);
     }
 
@@ -170,8 +170,38 @@ public class VueControleur extends JFrame implements Observer {
         }
     }
 
+    public void affichageVieJoueur() {
+        if(jeu.getHeros().getHerosLife() > 0) {
+            tabJLabel[sizeX-4][0].setIcon(imgIcons.get("Vie"));
+        }if(jeu.getHeros().getHerosLife() > 1) {
+            tabJLabel[sizeX-3][0].setIcon(imgIcons.get("Vie"));
+        }if(jeu.getHeros().getHerosLife() > 2) {
+            tabJLabel[sizeX-2][0].setIcon(imgIcons.get("Vie"));
+        }
+    }
+
+    public void affichageGameOver(){
+        if(jeu.isGameOver()){
+
+        }
+    }
+
+    public void affichageGameWin(){
+
+    }
+
+    public void Menu(){
+        JFrame menu = new JFrame();
+        menu.setTitle("Gyromite le jeu !");
+        menu.setSize(200,200);
+        menu.setResizable(false);
+        menu.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        menu.setVisible(true);
+    }
+
     @Override
     public void update(Observable o, Object arg) {
         mettreAJourAffichage();
+        affichageVieJoueur();
     }
 }

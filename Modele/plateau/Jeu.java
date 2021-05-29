@@ -7,6 +7,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Jeu {
@@ -14,12 +15,12 @@ public class Jeu {
     public static final int SIZE_X = 20;
     public static final int SIZE_Y = 15;
 
-
     String niveauReader;
 
     private final Ordonnanceur ordonnanceur = new Ordonnanceur(this);
 
     private Heros heros;
+    private Point orgPos;
 
     private HashMap<Entite, Point> carte = new HashMap<>();
     private Entite[][] grilleEntites = new Entite[SIZE_X][SIZE_Y];
@@ -27,6 +28,7 @@ public class Jeu {
     private boolean isGameOver = false;
     private boolean isGameWin = false;
 
+    private int score;
 
     public Ordonnanceur getOrdonnanceur() {
         return ordonnanceur;
@@ -35,6 +37,8 @@ public class Jeu {
     public Heros getHeros() {
         return heros;
     }
+
+    private int compteurBombe = 0;
 
     public Entite[][] getGrille() {
         return grilleEntites;
@@ -87,6 +91,7 @@ public class Jeu {
                     case 'A':
                         heros = new Heros(this, x, y, new CaseVide(this));
                         addEntite(heros, x, y);
+                        orgPos = new Point(x, y);
                         Controle4Directions.getInstance().addEntiteDynamique(heros);
                         Gravite.getInstance().addEntiteDynamique(heros);
                         break;
@@ -101,6 +106,7 @@ public class Jeu {
                         break;
                     case 'E':
                         addEntite(new Bombe(this), x, y);
+                        compteurBombe++;
                         break;
                     case 'V':
                         addEntite(new CaseVide(this), x, y);
@@ -179,27 +185,27 @@ public class Jeu {
         int py = carte.get(entite).y;
 
         boolean deplacementOK = false;
-        if(entite instanceof EntiteDynamique) {
+        if (entite instanceof EntiteDynamique) {
             EntiteDynamique eD = (EntiteDynamique) entite;
             switch (direction) {
                 case Droite:
-                    setCasePrecedente(eD, px, py);
+                    remetCasePrecedente(eD, px, py);
                     replaceEntite(eD, px + 1, py);
                     deplacementOK = true;
                     break;
                 case Gauche:
-                    setCasePrecedente(eD, px, py);
+                    remetCasePrecedente(eD, px, py);
                     replaceEntite(eD, px - 1, py);
                     deplacementOK = true;
 
                     break;
                 case Haut:
-                    setCasePrecedente(eD, px, py);
+                    remetCasePrecedente(eD, px, py);
                     replaceEntite(eD, px, py - 1);
                     deplacementOK = true;
                     break;
                 case Bas:
-                    setCasePrecedente(eD, px, py);
+                    remetCasePrecedente(eD, px, py);
                     replaceEntite(eD, px, py + 1);
                     deplacementOK = true;
                     break;
@@ -225,17 +231,64 @@ public class Jeu {
         carte.put(e, new Point(x, y));
     }
 
-    private void setCasePrecedente(EntiteDynamique e, int x, int y) {
+    private void remetCasePrecedente(EntiteDynamique e, int x, int y) {
         carte.remove(e);
         grilleEntites[x][y] = e.getCasePrecedente();
         carte.put(e.getCasePrecedente(), new Point(x, y));
     }
 
     private void replaceEntite(EntiteDynamique e, int x, int y) {
-        e.setCasePrecedente(grilleEntites[x][y]);
-        carte.remove(grilleEntites[x][y]);
-        grilleEntites[x][y] = e;
-        carte.put(e, new Point(x, y));
+        if (e instanceof Smick) {
+            if (grilleEntites[x][y] instanceof Heros) {
+                e.setCasePrecedente(((Heros) grilleEntites[x][y]).getCasePrecedente());
+                playerLooseLife();
+                grilleEntites[x][y] = e;
+                carte.put(e, new Point(x, y));
+            } else {
+                e.setCasePrecedente(grilleEntites[x][y]);
+                carte.remove(grilleEntites[x][y]);
+                grilleEntites[x][y] = e;
+                carte.put(e, new Point(x, y));
+            }
+        }
+        if(e instanceof Heros){
+            if(grilleEntites[x][y] instanceof Smick){
+                e.setCasePrecedente(((Smick) grilleEntites[x][y]).getCasePrecedente());
+                playerLooseLife();
+            }
+            else {
+                if(grilleEntites[x][y] instanceof Bombe){
+                    e.setCasePrecedente(new CaseVide(this));
+                    this.setScore(this.getScore()+100);
+                    this.compteurBombe--;
+                }
+                else{
+                    e.setCasePrecedente(grilleEntites[x][y]);
+                }
+                carte.remove(grilleEntites[x][y]);
+                grilleEntites[x][y] = e;
+                carte.put(e, new Point(x, y));
+            }
+        }
+    }
+
+    public void playerLooseLife() {
+        this.heros.setHerosLife(this.heros.getHerosLife() - 1);
+        if(this.heros.getHerosLife() <= 0){
+            isGameOver = true;
+        }
+        remetCasePrecedente(heros, heros.getX(), heros.getY());
+        heros.setCasePrecedente(new CaseVide(this));
+        heros.setDirectionCourante(Direction.Droite);
+        carte.put(heros, orgPos);
+        grilleEntites[orgPos.x][orgPos.y] = heros;
+        Controle4Directions.getInstance().resetControle4Directions();
+    }
+
+    public void checkIsWin(){
+        if(this.compteurBombe <=0){
+            isGameWin = true;
+        }
     }
 
     public boolean isGameOver() {
@@ -244,5 +297,13 @@ public class Jeu {
 
     public boolean isGameWin() {
         return isGameWin;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
     }
 }
