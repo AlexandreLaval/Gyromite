@@ -29,6 +29,9 @@ public class Jeu {
     private boolean isGameWin = false;
 
     private int score;
+    private int compteurColonne = 0;
+
+    private ArrayList<ColonneEntiere> lstColEntiere = new ArrayList<>();
 
     public Ordonnanceur getOrdonnanceur() {
         return ordonnanceur;
@@ -121,19 +124,39 @@ public class Jeu {
                         addEntite(new PoutreHorizontal(this), x, y);
                         break;
                     case 'H':
-                        addEntite(new Colonne(this, ColonneType.Haut), x, y);
+                        Colonne colH = new Colonne(this, ColonneType.Haut);
+                        addEntite(colH, x, y);
+                        ColonneEntiere colEntiere = new ColonneEntiere(this);
+                        colEntiere.addCol(colH);
+                        lstColEntiere.add(colEntiere);
                         break;
                     case 'M':
-                        addEntite(new Colonne(this, ColonneType.Milieu), x, y);
+                        Colonne colM = new Colonne(this, ColonneType.Milieu);
+                        addEntite(colM, x, y);
+
+                        for (int i = 0; i < lstColEntiere.size(); i++) {
+                            if (lstColEntiere.get(i).colonnes.size() == 1)
+                                lstColEntiere.get(i).addCol(colM);
+                        }
+
                         break;
                     case 'B':
-                        addEntite(new Colonne(this, ColonneType.Bas), x, y);
+                        Colonne colB = new Colonne(this, ColonneType.Bas);
+                        addEntite(colB, x, y);
+
+                        for (int i = 0; i < lstColEntiere.size(); i++) {
+                            if (lstColEntiere.get(i).colonnes.size() == 2) {
+                                lstColEntiere.get(i).addCol(colB);
+                                ColonneControle.getInstance().addEntiteDynamique(lstColEntiere.get(i));
+                            }
+                        }
                         break;
                 }
 
             }
         }
         getOrdonnanceur().addDep(Controle4Directions.getInstance());
+        getOrdonnanceur().addDep(ColonneControle.getInstance());
         getOrdonnanceur().addDep(Gravite.getInstance());
         getOrdonnanceur().addDep(IA.getInstance());
     }
@@ -210,18 +233,6 @@ public class Jeu {
                     deplacementOK = true;
                     break;
             }
-/*
-            if (entite instanceof Colonne) {
-                if (direction == Direction.Bas && py + 1 < SIZE_Y && grilleEntites[px][py - 1].traversable()) {
-                    setCasePrecedente(entite, px, py);
-                    replaceEntite(entite, px, py + 1);
-                    deplacementOK = true;
-                } else if (direction == Direction.Haut && py - 1 < SIZE_Y && grilleEntites[px][py - 1].traversable()) {
-                    setCasePrecedente(entite, px, py);
-                    replaceEntite(entite, px, py - 1);
-                    deplacementOK = true;
-                }
-            }*/
         }
         return deplacementOK;
     }
@@ -251,18 +262,16 @@ public class Jeu {
                 carte.put(e, new Point(x, y));
             }
         }
-        if(e instanceof Heros){
-            if(grilleEntites[x][y] instanceof Smick){
+        if (e instanceof Heros) {
+            if (grilleEntites[x][y] instanceof Smick) {
                 e.setCasePrecedente(((Smick) grilleEntites[x][y]).getCasePrecedente());
                 playerLooseLife();
-            }
-            else {
-                if(grilleEntites[x][y] instanceof Bombe){
+            } else {
+                if (grilleEntites[x][y] instanceof Bombe) {
                     e.setCasePrecedente(new CaseVide(this));
-                    this.setScore(this.getScore()+1);
+                    this.setScore(this.getScore() + 1);
                     this.compteurBombe--;
-                }
-                else{
+                } else {
                     e.setCasePrecedente(grilleEntites[x][y]);
                 }
                 carte.remove(grilleEntites[x][y]);
@@ -270,11 +279,17 @@ public class Jeu {
                 carte.put(e, new Point(x, y));
             }
         }
+        if (e instanceof Colonne) {
+            e.setCasePrecedente(grilleEntites[x][y]);
+            carte.remove(grilleEntites[x][y]);
+            grilleEntites[x][y] = e;
+            carte.put(e, new Point(x, y));
+        }
     }
 
     public void playerLooseLife() {
         this.heros.setHerosLife(this.heros.getHerosLife() - 1);
-        if(this.heros.getHerosLife() <= 0){
+        if (this.heros.getHerosLife() <= 0) {
             isGameOver = true;
         }
         remetCasePrecedente(heros, heros.getX(), heros.getY());
@@ -285,8 +300,8 @@ public class Jeu {
         Controle4Directions.getInstance().resetControle4Directions();
     }
 
-    public void checkIsWin(){
-        if(this.compteurBombe <=0){
+    public void checkIsWin() {
+        if (this.compteurBombe <= 0) {
             isGameWin = true;
         }
     }
