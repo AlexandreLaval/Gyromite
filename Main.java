@@ -1,6 +1,8 @@
 
 import Modele.plateau.Jeu;
-import VueControleur.VueControleur;
+import VueControleur.Menu;
+
+import java.awt.*;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -11,13 +13,15 @@ import VueControleur.VueControleur;
 
 public class Main {
     public static void main(String[] args) {
-        Jeu jeu = new Jeu();
+        //Jeu jeu = new Jeu();
 
-        VueControleur vc = new VueControleur(jeu);
+        Menu menu = new Menu();
+
+        /*VueControleur vc = new VueControleur(jeu);
 
         jeu.getOrdonnanceur().addObserver(vc);
 
-        vc.setVisible(true);
-        jeu.getOrdonnanceur().start();
+        vc.setVisible(false);
+        jeu.getOrdonnanceur().start();*/
     }
 }
