@@ -41,6 +41,7 @@ public class Ordonnanceur extends Observable implements Runnable {
                 deplacement.realiserDeplacement();
             }
             Controle4Directions.getInstance().resetControle4Directions();
+            ColonneControle.getInstance().resetDirection();
             try {
                 Thread.sleep(pause);
             } catch (InterruptedException e) {
