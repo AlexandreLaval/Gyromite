@@ -18,6 +18,7 @@ public class Controle4Directions extends RealisateurDeplacement {
         boolean realiserDeplacement = false;
         if (directionCourante != null) {
             for (EntiteDynamique entite : lstEntitesDynamiques) {
+                entite.setDirectionCourante(directionCourante); //pour gerer l'affichage
                 Entite entiteObservee = entite.regarderDansLaDirection(directionCourante);
 
                 if (entiteObservee != null && entiteObservee.traversable()) {
@@ -25,7 +26,6 @@ public class Controle4Directions extends RealisateurDeplacement {
                         case Haut, Bas:
                             if (entiteObservee.traversable()) {
                                 if (entiteObservee.peutPermettreDeMonterDescendre()) {
-
                                     if (entite.avancerDirectionChoisie(directionCourante)) {
                                         realiserDeplacement = true;
                                     }

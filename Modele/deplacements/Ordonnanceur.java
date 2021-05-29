@@ -7,7 +7,7 @@ import java.util.Observable;
 
 public class Ordonnanceur extends Observable implements Runnable {
 
-    private int pause = 200; // période de rafraichissement
+    private int pause = 300; // période de rafraichissement
     private Jeu jeu;
     private static ArrayList<RealisateurDeplacement> lstRealDeplacement = new ArrayList<>();
 
@@ -33,7 +33,8 @@ public class Ordonnanceur extends Observable implements Runnable {
 
     @Override
     public void run() {
-        while (!jeu.isGameOver() || !jeu.isGameWin()) {
+        while (!jeu.isGameOver() && !jeu.isGameWin()) {
+            jeu.checkIsWin();
             setChanged();
             notifyObservers();
             for (RealisateurDeplacement deplacement : lstRealDeplacement) {
