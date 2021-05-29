@@ -259,7 +259,7 @@ public class Jeu {
             else {
                 if(grilleEntites[x][y] instanceof Bombe){
                     e.setCasePrecedente(new CaseVide(this));
-                    this.setScore(this.getScore()+100);
+                    this.setScore(this.getScore()+1);
                     this.compteurBombe--;
                 }
                 else{
