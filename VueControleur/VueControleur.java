@@ -164,14 +164,22 @@ public class VueControleur extends JFrame implements Observer {
                             tabJLabel[x][y].setIcon(imgIcons.get("HerosIdleG"));
                         }
                     }
+                } else if (e instanceof Smick) {
+                    if (((Smick) e).getCasePrecedente() instanceof Corde) {
+                        tabJLabel[x][y].setIcon(imgIcons.get("SmickClimb"));
+                    } else {
+                        if (((Smick) e).getFaceDirection() == Direction.Droite) {
+                            tabJLabel[x][y].setIcon(imgIcons.get("SmickIdleD"));
+                        } else if (((Smick) e).getDirectionCourante() == Direction.Gauche) {
+                            tabJLabel[x][y].setIcon(imgIcons.get("SmickIdleG"));
+                        }
+                    }
                 } else if (e instanceof Colonne) {
-                    if(((Colonne) e).getColonneType() == ColonneType.Haut) {
+                    if (((Colonne) e).getColonneType() == ColonneType.Haut) {
                         tabJLabel[x][y].setIcon(imgIcons.get("ColonneHaut"));
-                    }
-                    else if (((Colonne) e).getColonneType() == ColonneType.Milieu) {
+                    } else if (((Colonne) e).getColonneType() == ColonneType.Milieu) {
                         tabJLabel[x][y].setIcon(imgIcons.get("ColonneMilieu"));
-                    }
-                    else if (((Colonne) e).getColonneType() == ColonneType.Bas) {
+                    } else if (((Colonne) e).getColonneType() == ColonneType.Bas) {
                         tabJLabel[x][y].setIcon(imgIcons.get("ColonneBas"));
                     }
                 }
