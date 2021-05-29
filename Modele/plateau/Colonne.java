@@ -5,7 +5,9 @@ public class Colonne extends EntiteDynamique{
 
     public Colonne(Jeu _jeu, ColonneType colonneType) {
         super(_jeu);
-        colType = colonneType;}
+        colType = colonneType;
+        setCasePrecedente(new CaseVide(jeu));
+    }
 
     @Override
     public boolean traversable() {
