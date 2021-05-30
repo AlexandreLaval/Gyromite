@@ -17,6 +17,7 @@ public class endGame extends JFrame implements MouseListener {
 
     public endGame(boolean _win, int _niveau){
         this.isWin = _win;
+        this.niveau = _niveau;
 
         this.setTitle("END GAME");
         this.setSize(500,500);
@@ -44,10 +45,14 @@ public class endGame extends JFrame implements MouseListener {
 
             panelBtn.add(btnJouer);
         }
-        else if(isWin) {
+        else {
             this.getContentPane().add(new winPanel(score), BorderLayout.CENTER);
-
-            JButton btnJouer = new JButton("NIVEAU SUIVANT");
+            JButton btnJouer;
+            if(this.niveau != Jeu.NB_MAX_OF_LVL) {
+                btnJouer  = new JButton("NIVEAU SUIVANT");
+            } else{
+                btnJouer  = new JButton("QUITTER");
+            }
             btnJouer.setForeground(Color.black);
             btnJouer.setBackground(Color.blue);
             btnJouer.setFocusPainted(false);
@@ -61,23 +66,28 @@ public class endGame extends JFrame implements MouseListener {
         this.setVisible(true);
     }
 
+    public void nextLevel(int niveau){
+        Jeu jeu = new Jeu(niveau);
+
+        VueControleur vc = new VueControleur(jeu);
+
+        jeu.getOrdonnanceur().addObserver(vc);
+
+        vc.setVisible(true);
+
+        jeu.getOrdonnanceur().start();
+        this.dispose();
+    }
+
     @Override
     public void mouseClicked(MouseEvent e) {
-        if(isWin && niveau!=2){
-            Jeu jeu = new Jeu(2);
-
-            VueControleur vc = new VueControleur(jeu);
-
-            jeu.getOrdonnanceur().addObserver(vc);
-
-            vc.setVisible(true);
-
-            jeu.getOrdonnanceur().start();
-            this.dispose();
+        if(isWin && niveau==1){
+            nextLevel(2);
+        } else if(isWin && niveau == 2){
+            System.exit(0);
         }
         else if (!isWin && niveau==1)
             new Menu(1);
-
         else if (!isWin && niveau==2)
             new Menu(2);
         this.dispose();

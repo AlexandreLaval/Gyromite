@@ -9,7 +9,7 @@ import java.util.Observable;
 
 public class Ordonnanceur extends Observable implements Runnable {
 
-    private int pause = 300; // période de rafraichissement
+    private int pause = 250; // période de rafraichissement
     private Jeu jeu;
     private static ArrayList<RealisateurDeplacement> lstRealDeplacement = new ArrayList<>();
     private int compteurColMouv = 0;

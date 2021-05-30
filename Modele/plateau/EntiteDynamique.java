@@ -2,14 +2,19 @@ package Modele.plateau;
 
 
 import Modele.deplacements.Direction;
+import Modele.plateau.enums.EntiteDynamiqueState;
 
 public abstract class EntiteDynamique extends Entite {
+
+    private EntiteDynamiqueState entiteDynamiqueState;
 
     private Direction faceDirection = Direction.Droite;
 
     private Entite casePrecedente;
 
     private Direction directionCourante;
+
+    private boolean isFalling = false;
 
     public EntiteDynamique(Jeu _jeu) {
         super(_jeu);
@@ -46,5 +51,21 @@ public abstract class EntiteDynamique extends Entite {
 
     public Entite regarderDansLaDirection(Direction d) {
         return jeu.regarderDansLaDirection(this, d);
+    }
+
+    public EntiteDynamiqueState getEntiteDynamiqueState() {
+        return entiteDynamiqueState;
+    }
+
+    public void setEntiteDynamiqueState(EntiteDynamiqueState entiteDynamiqueState) {
+        this.entiteDynamiqueState = entiteDynamiqueState;
+    }
+
+    public boolean isFalling() {
+        return isFalling;
+    }
+
+    public void setFalling(boolean falling) {
+        isFalling = falling;
     }
 }

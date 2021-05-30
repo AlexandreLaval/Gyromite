@@ -1,6 +1,7 @@
 package Modele.plateau;
 
 import Modele.deplacements.Direction;
+import Modele.plateau.enums.EntiteDynamiqueState;
 
 public class Smick extends EntiteDynamique{
 
@@ -9,6 +10,7 @@ public class Smick extends EntiteDynamique{
         super(_jeu);
         this.setDirectionCourante(direction);
         this.setCasePrecedente(casePrecedente);
+        this.setEntiteDynamiqueState(EntiteDynamiqueState.Idle);
     }
 
     @Override

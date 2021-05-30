@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Jeu {
-
+    public static final int NB_MAX_OF_LVL = 2;
     public static final int SIZE_X = 20;
     public static final int SIZE_Y = 15;
 
@@ -117,6 +117,9 @@ public class Jeu {
                         break;
                     case 'V': //CaseVide
                         addEntite(new CaseVide(this), x, y);
+                        break;
+                    case 'X': //Plafond
+                        addEntite(new Plafond(this), x, y);
                         break;
                     case 'C': //Corde
                         addEntite(new Corde(this), x, y);
