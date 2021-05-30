@@ -307,7 +307,7 @@ public class Jeu {
         if (this.heros.getHerosLife() <= 0) {
             isGameOver = true;
         }
-        remetCasePrecedente( this.heros,  this.heros.getX(),  this.heros.getY());
+        remetCasePrecedente( this.heros,  this.carte.get(heros).x,  this.carte.get(heros).y);
         this.carte.put( this.heros, orgPos);
         this.grilleEntites[orgPos.x][orgPos.y] =  this.heros;
         this.heros.setCasePrecedente(new CaseVide(this));
