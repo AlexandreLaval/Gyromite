@@ -25,7 +25,8 @@ public class Controle4Directions extends RealisateurDeplacement {
                     switch (directionCourante) {
                         case Haut, Bas:
                             if (entiteObservee.traversable()) {
-                                if (entiteObservee.peutPermettreDeMonterDescendre()) {
+                                if (entiteObservee.peutPermettreDeMonterDescendre() ||
+                                        (directionCourante.equals(Direction.Bas) && entiteObservee.traversable())) {
                                     if (entite.avancerDirectionChoisie(directionCourante)) {
                                         realiserDeplacement = true;
                                     }

@@ -49,26 +49,30 @@ public class IA extends RealisateurDeplacement {
             if (entiteObservee != null && entiteObservee.traversable()) {
                 switch (directionCourante) {
                     case Haut, Bas:
-                        if (entiteObservee.peutPermettreDeMonterDescendre()) {
+                        if (entiteObservee.peutPermettreDeMonterDescendre() ||
+                                (directionCourante.equals(Direction.Bas) && entiteObservee.traversable())) {
                             if (entite.avancerDirectionChoisie(directionCourante)) {
                                 realiserDeplacement = true;
                             }
-                        }
-                        else {
+                        } else {
                             changeDirection(entite);
                         }
                         break;
                     case Droite, Gauche:
-                        if (entiteObservee.checkSiEntiteDessousPeutServirDeSupport()) {
-                            if (entite.avancerDirectionChoisie(directionCourante)) {
-                                realiserDeplacement = true;
-                            }
-                        }else if (entiteObservee.peutPermettreDeMonterDescendre()) {
+                        if(entite.getCasePrecedente().peutPermettreDeMonterDescendre()){
                             if (entite.avancerDirectionChoisie(directionCourante)) {
                                 realiserDeplacement = true;
                             }
                         }
-                        else {
+                        else if (entiteObservee.checkSiEntiteDessousPeutServirDeSupport()) {
+                            if (entite.avancerDirectionChoisie(directionCourante)) {
+                                realiserDeplacement = true;
+                            }
+                        } else if (entiteObservee.peutPermettreDeMonterDescendre()) {
+                            if (entite.avancerDirectionChoisie(directionCourante)) {
+                                realiserDeplacement = true;
+                            }
+                        } else {
                             changeDirection(entite);
                         }
                         break;

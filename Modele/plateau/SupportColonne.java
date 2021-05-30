@@ -1,14 +1,14 @@
 package Modele.plateau;
 
-import Modele.plateau.enums.ColonneType;
+import Modele.plateau.enums.SupportColonneType;
 
-public class Colonne extends EntiteDynamique{
-    ColonneType colType;
+public class SupportColonne extends EntiteStatique{
 
-    public Colonne(Jeu _jeu, ColonneType colonneType) {
+    private final SupportColonneType supportColonneType;
+
+    public SupportColonne(Jeu _jeu,SupportColonneType supportColonneType) {
         super(_jeu);
-        colType = colonneType;
-        setCasePrecedente(new CaseVide(jeu));
+        this.supportColonneType = supportColonneType;
     }
 
     @Override
@@ -31,9 +31,7 @@ public class Colonne extends EntiteDynamique{
         return false;
     }
 
-    public ColonneType getColonneType(){
-        return colType;
+    public SupportColonneType getSupportColonneType() {
+        return supportColonneType;
     }
-
-
 }

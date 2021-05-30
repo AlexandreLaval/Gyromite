@@ -22,6 +22,11 @@ public class Heros extends EntiteDynamique{
         return y;
     }
 
+    public void setPosXY(int x, int y){
+        this.x = x;
+        this.y = y;
+    }
+
 
     public Heros(Jeu _jeu, int _x, int _y, Entite casePrecedente) {
         super(_jeu);
