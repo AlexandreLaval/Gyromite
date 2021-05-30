@@ -60,9 +60,8 @@ public class endGame extends JFrame implements MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        Menu menu = new Menu();
-        this.setVisible(false);
-        menu.setVisible(true);
+        new Menu();
+        this.dispose();
     }
 
     @Override

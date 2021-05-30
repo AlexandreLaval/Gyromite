@@ -2,6 +2,8 @@ package Modele.deplacements;
 
 import Modele.plateau.Jeu;
 
+import java.io.Console;
+import java.lang.constant.Constable;
 import java.util.ArrayList;
 import java.util.Observable;
 
@@ -59,6 +61,5 @@ public class Ordonnanceur extends Observable implements Runnable {
                 e.printStackTrace();
             }
         }
-
     }
 }
