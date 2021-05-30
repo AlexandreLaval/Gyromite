@@ -232,14 +232,6 @@ public class VueControleur extends JFrame implements Observer {
 
     }
 
-    public void Menu() {
-        JFrame menu = new JFrame();
-        menu.setTitle("Gyromite le jeu !");
-        menu.setSize(200, 200);
-        menu.setResizable(false);
-        menu.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        menu.setVisible(true);
-    }
 
     @Override
     public void update(Observable o, Object arg) {
