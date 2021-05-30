@@ -29,7 +29,6 @@ public class Jeu {
     private boolean isGameWin = false;
 
     private int score;
-    private int compteurColonne = 0;
 
     private ArrayList<ColonneEntiere> lstColEntiere = new ArrayList<>();
 
@@ -166,28 +165,31 @@ public class Jeu {
 
         Entite entiteRegardee = null;
         Point coordEntiteRegardee = new Point(0, 0);
-        switch (direction) {
-            case Droite:
-                coordEntiteRegardee.x = positionEntite.x + 1;
-                coordEntiteRegardee.y = positionEntite.y;
-                break;
-            case Gauche:
-                coordEntiteRegardee.x = positionEntite.x - 1;
-                coordEntiteRegardee.y = positionEntite.y;
-                break;
-            case Haut:
-                coordEntiteRegardee.x = positionEntite.x;
-                coordEntiteRegardee.y = positionEntite.y - 1;
-                break;
-            case Bas:
-                coordEntiteRegardee.x = positionEntite.x;
-                coordEntiteRegardee.y = positionEntite.y + 1;
-                break;
+        if (positionEntite != null) {
+            switch (direction) {
+                case Droite:
+                    coordEntiteRegardee.x = positionEntite.x + 1;
+                    coordEntiteRegardee.y = positionEntite.y;
+                    break;
+                case Gauche:
+                    coordEntiteRegardee.x = positionEntite.x - 1;
+                    coordEntiteRegardee.y = positionEntite.y;
+                    break;
+                case Haut:
+                    coordEntiteRegardee.x = positionEntite.x;
+                    coordEntiteRegardee.y = positionEntite.y - 1;
+                    break;
+                case Bas:
+                    coordEntiteRegardee.x = positionEntite.x;
+                    coordEntiteRegardee.y = positionEntite.y + 1;
+                    break;
+            }
+
+            if (estDansGrille(coordEntiteRegardee)) {
+                entiteRegardee = grilleEntites[coordEntiteRegardee.x][coordEntiteRegardee.y];
+            }
         }
 
-        if (estDansGrille(coordEntiteRegardee)) {
-            entiteRegardee = grilleEntites[coordEntiteRegardee.x][coordEntiteRegardee.y];
-        }
         return entiteRegardee;
     }
 
@@ -237,6 +239,18 @@ public class Jeu {
         return deplacementOK;
     }
 
+    public void ecraseEntite(EntiteDynamique colonne, EntiteDynamique entiteEcrasee) {
+        if (entiteEcrasee instanceof Heros) {
+            colonne.setCasePrecedente(new CaseVide(this));
+            grilleEntites[heros.getX()][heros.getY()] = heros.getCasePrecedente();
+            playerLooseLife();
+        } else if (entiteEcrasee instanceof Smick) {
+            remetCasePrecedente(entiteEcrasee, carte.get(entiteEcrasee).x, carte.get(entiteEcrasee).y);
+            IA.getInstance().removeEntiteDynamique(entiteEcrasee);
+            Gravite.getInstance().removeEntiteDynamique(entiteEcrasee);
+        }
+    }
+
     private void addEntite(Entite e, int x, int y) {
         grilleEntites[x][y] = e;
         carte.put(e, new Point(x, y));
@@ -281,23 +295,23 @@ public class Jeu {
         }
         if (e instanceof Colonne) {
             e.setCasePrecedente(grilleEntites[x][y]);
-            carte.remove(grilleEntites[x][y]);
-            grilleEntites[x][y] = e;
-            carte.put(e, new Point(x, y));
+            this.carte.remove(grilleEntites[x][y]);
+            this.grilleEntites[x][y] = e;
+            this.carte.put(e, new Point(x, y));
         }
     }
 
     public void playerLooseLife() {
+        Controle4Directions.getInstance().resetControle4Directions();
         this.heros.setHerosLife(this.heros.getHerosLife() - 1);
         if (this.heros.getHerosLife() <= 0) {
             isGameOver = true;
         }
-        remetCasePrecedente(heros, heros.getX(), heros.getY());
-        heros.setCasePrecedente(new CaseVide(this));
-        heros.setDirectionCourante(Direction.Droite);
-        carte.put(heros, orgPos);
-        grilleEntites[orgPos.x][orgPos.y] = heros;
-        Controle4Directions.getInstance().resetControle4Directions();
+        remetCasePrecedente( this.heros,  this.carte.get(heros).x,  this.carte.get(heros).y);
+        this.carte.put( this.heros, orgPos);
+        this.grilleEntites[orgPos.x][orgPos.y] =  this.heros;
+        this.heros.setCasePrecedente(new CaseVide(this));
+        this.heros.setDirectionCourante(Direction.Droite);
     }
 
     public void checkIsWin() {

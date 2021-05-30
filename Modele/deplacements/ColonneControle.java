@@ -32,11 +32,13 @@ public class ColonneControle extends RealisateurDeplacement {
             for (EntiteDynamique entite : lstEntitesDynamiques) {
                 int nbColonne = lstEntitesDynamiques.size();
                 if (directionCourante != null && nbDeplacement < NB_DEPLACEMENT * nbColonne) {
-                    realiserDeplacement = entite.avancerDirectionChoisie(directionCourante);
-                    if (realiserDeplacement)
+                    if(entite.avancerDirectionChoisie(directionCourante));
+                    {
+                        realiserDeplacement = true;
                         nbDeplacement++;
+                       // this.realiserDeplacement();
+                    }
                 } else if (nbDeplacement >= NB_DEPLACEMENT * nbColonne) {
-                    resetDirection();
                     enHaut = !enHaut;
                     nbDeplacement = 0;
                 }
