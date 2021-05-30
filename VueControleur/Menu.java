@@ -58,8 +58,8 @@ public class Menu extends JFrame implements MouseListener {
         vc.setVisible(true);
 
         jeu.getOrdonnanceur().start();
-        this.dispose();
 
+        this.dispose();
     }
 
     @Override

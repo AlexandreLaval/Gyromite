@@ -40,7 +40,7 @@ public class Ordonnanceur extends Observable implements Runnable {
             jeu.checkIsWin();
             setChanged();
             notifyObservers();
-
+            //Faire descendre les colonnes par tick de temps
             if(ColonneControle.getInstance().getDirectionCourante() != null && compteurColMouv >= ColonneControle.NB_DEPLACEMENT) {
                 compteurColMouv = 0;
                 ColonneControle.getInstance().resetDirection();
@@ -53,14 +53,13 @@ public class Ordonnanceur extends Observable implements Runnable {
             }
             Controle4Directions.getInstance().resetControle4Directions();
 
-
-
             try {
                 Thread.sleep(pause);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
+        //Permet de reset nos singletons après la réussite d'un niveau
         Controle4Directions.resetSingletion();
         IA.resetSingletion();
         Gravite.resetSingletion();

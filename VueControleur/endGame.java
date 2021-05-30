@@ -15,9 +15,10 @@ public class endGame extends JFrame implements MouseListener {
     public int score;
     public int niveau;
 
-    public endGame(boolean _win, int _niveau){
+    public endGame(boolean _win, int _niveau, int _score){
         this.isWin = _win;
         this.niveau = _niveau;
+        this.score = _score * 100;
 
         this.setTitle("END GAME");
         this.setSize(500,500);
@@ -30,8 +31,6 @@ public class endGame extends JFrame implements MouseListener {
         //panel bouton
         JPanel panelBtn = new JPanel();
         panelBtn.setBackground(Color.black);
-
-
 
         //si perdu
         if(!isWin) {

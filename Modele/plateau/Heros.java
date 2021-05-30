@@ -5,8 +5,6 @@
  */
 package Modele.plateau;
 
-import Modele.plateau.enums.EntiteDynamiqueState;
-
 /**
  * Héros du jeu
  */
@@ -35,7 +33,6 @@ public class Heros extends EntiteDynamique{
         x = _x;
         y = _y;
         this.setCasePrecedente(casePrecedente);
-        this.setEntiteDynamiqueState(EntiteDynamiqueState.Idle);
     }
 
     @Override

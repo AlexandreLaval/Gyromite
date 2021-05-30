@@ -2,11 +2,8 @@ package Modele.plateau;
 
 
 import Modele.deplacements.Direction;
-import Modele.plateau.enums.EntiteDynamiqueState;
 
 public abstract class EntiteDynamique extends Entite {
-
-    private EntiteDynamiqueState entiteDynamiqueState;
 
     private Direction faceDirection = Direction.Droite;
 
@@ -26,6 +23,8 @@ public abstract class EntiteDynamique extends Entite {
 
     public void setDirectionCourante(Direction directionCourante) {
         this.directionCourante = directionCourante;
+
+        //Pour gerer l'affichage coté vue
         if (directionCourante == Direction.Droite) {
             faceDirection = Direction.Droite;
         } else if (directionCourante == Direction.Gauche) {
@@ -51,14 +50,6 @@ public abstract class EntiteDynamique extends Entite {
 
     public Entite regarderDansLaDirection(Direction d) {
         return jeu.regarderDansLaDirection(this, d);
-    }
-
-    public EntiteDynamiqueState getEntiteDynamiqueState() {
-        return entiteDynamiqueState;
-    }
-
-    public void setEntiteDynamiqueState(EntiteDynamiqueState entiteDynamiqueState) {
-        this.entiteDynamiqueState = entiteDynamiqueState;
     }
 
     public boolean isFalling() {

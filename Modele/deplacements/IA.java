@@ -64,6 +64,7 @@ public class IA extends RealisateurDeplacement {
                         }
                         break;
                     case Droite, Gauche:
+                        //Si le smick est sur une corde il peut se laisser tomber dans le vide
                         if(entite.getCasePrecedente().peutPermettreDeMonterDescendre()){
                             if (entite.avancerDirectionChoisie(directionCourante)) {
                                 realiserDeplacement = true;

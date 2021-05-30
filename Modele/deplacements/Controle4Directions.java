@@ -16,8 +16,7 @@ public class Controle4Directions extends RealisateurDeplacement {
         return cont4Dir;
     }
 
-    public static void resetSingletion()
-    {
+    public static void resetSingletion() {
         cont4Dir = null;
     }
 
@@ -30,26 +29,25 @@ public class Controle4Directions extends RealisateurDeplacement {
         boolean realiserDeplacement = false;
         if (directionCourante != null) {
             for (EntiteDynamique entite : lstEntitesDynamiques) {
-                entite.setDirectionCourante(directionCourante); //pour gerer l'affichage
+                //pour gerer l'affichage
+                entite.setDirectionCourante(directionCourante);
+                // On récupère l'entite qui est stocké sur la case que l'on regarde
                 Entite entiteObservee = entite.regarderDansLaDirection(directionCourante);
 
                 if (entiteObservee != null && entiteObservee.traversable()) {
                     switch (directionCourante) {
                         case Haut, Bas:
-                            if (entiteObservee.traversable()) {
-                                if (entiteObservee.peutPermettreDeMonterDescendre() ||
-                                        (directionCourante.equals(Direction.Bas) && entiteObservee.traversable())) {
-                                    if (entite.avancerDirectionChoisie(directionCourante)) {
-                                        realiserDeplacement = true;
-                                    }
+                            //Si l'entiteObserve est une case vide et que l'on est sur une corde on peut se laisser tomber
+                            if (entiteObservee.peutPermettreDeMonterDescendre() ||
+                                    (directionCourante.equals(Direction.Bas) && entiteObservee.traversable())) {
+                                if (entite.avancerDirectionChoisie(directionCourante)) {
+                                    realiserDeplacement = true;
                                 }
                             }
                             break;
                         case Droite, Gauche:
-                            if (entiteObservee.traversable()) {
-                                if (entite.avancerDirectionChoisie(directionCourante)) {
-                                    realiserDeplacement = true;
-                                }
+                            if (entite.avancerDirectionChoisie(directionCourante)) {
+                                realiserDeplacement = true;
                             }
                             break;
                     }
