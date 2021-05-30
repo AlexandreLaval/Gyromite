@@ -20,7 +20,7 @@ public class Gravite extends RealisateurDeplacement {
         for (EntiteDynamique entite : lstEntitesDynamiques) {
             Entite entiteObservee = entite.regarderDansLaDirection(Direction.Bas);
 
-            if (!entiteObservee.peutServirDeSupport() && !entiteObservee.peutPermettreDeMonterDescendre()) {
+            if (entiteObservee != null && !entiteObservee.peutServirDeSupport() && !entite.getCasePrecedente().peutPermettreDeMonterDescendre()) {
                 if (entite.avancerDirectionChoisie(Direction.Bas)) {
                     realiserDeplacement = true;
                 }

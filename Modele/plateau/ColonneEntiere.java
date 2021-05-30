@@ -1,8 +1,13 @@
 package Modele.plateau;
 
+import java.awt.*;
 import java.util.ArrayList;
 
+import Modele.deplacements.Controle4Directions;
 import Modele.deplacements.Direction;
+import Modele.deplacements.IA;
+
+import javax.naming.ldap.Control;
 
 public class ColonneEntiere extends EntiteDynamique {
 
@@ -44,17 +49,28 @@ public class ColonneEntiere extends EntiteDynamique {
     @Override
     public boolean avancerDirectionChoisie(Direction dir) {
         boolean deplacerColonne = false;
+
         if (dir == Direction.Haut) {
             for (int i = 0; i < NB_COLONNE; i++) {
-                if (dir != null) {
-                    deplacerColonne = colonnes.get(i).avancerDirectionChoisie(dir);
+                Entite entiteAuDessus = colonnes.get(i).regarderDansLaDirection(dir);
+                if (entiteAuDessus instanceof EntiteDynamique) {
+                    if (((EntiteDynamique) entiteAuDessus).regarderDansLaDirection(dir).traversable()) {
+                        jeu.deplacerEntite(entiteAuDessus, Direction.Haut);
+                    } else {
+                        jeu.ecraseEntite(colonnes.get(i),(EntiteDynamique) entiteAuDessus);
+                    }
                 }
+                deplacerColonne = colonnes.get(i).avancerDirectionChoisie(dir);
             }
         } else if (dir == Direction.Bas) {
             for (int i = NB_COLONNE - 1; i >= 0; i--) {
-                if (dir != null) {
-                    deplacerColonne = colonnes.get(i).avancerDirectionChoisie(dir);
+                Entite entiteAuDessous = colonnes.get(i).regarderDansLaDirection(dir);
+                if (entiteAuDessous instanceof EntiteDynamique) {
+                    if (!((EntiteDynamique) entiteAuDessous).regarderDansLaDirection(dir).traversable()) {
+                        jeu.ecraseEntite(colonnes.get(i),(EntiteDynamique) entiteAuDessous);
+                    }
                 }
+                deplacerColonne = colonnes.get(i).avancerDirectionChoisie(dir);
             }
         }
         return deplacerColonne;

@@ -10,6 +10,7 @@ public class Ordonnanceur extends Observable implements Runnable {
     private int pause = 300; // période de rafraichissement
     private Jeu jeu;
     private static ArrayList<RealisateurDeplacement> lstRealDeplacement = new ArrayList<>();
+    private int compteurColMouv = 0;
 
     public Ordonnanceur(Jeu _jeu) {
         jeu = _jeu;
@@ -37,11 +38,21 @@ public class Ordonnanceur extends Observable implements Runnable {
             jeu.checkIsWin();
             setChanged();
             notifyObservers();
+
+            if(ColonneControle.getInstance().getDirectionCourante() != null && compteurColMouv >= ColonneControle.NB_DEPLACEMENT) {
+                compteurColMouv = 0;
+                ColonneControle.getInstance().resetDirection();
+            }else if(ColonneControle.getInstance().getDirectionCourante() != null ){
+                compteurColMouv++;
+            }
+
             for (RealisateurDeplacement deplacement : lstRealDeplacement) {
                 deplacement.realiserDeplacement();
             }
             Controle4Directions.getInstance().resetControle4Directions();
-            ColonneControle.getInstance().resetDirection();
+
+
+
             try {
                 Thread.sleep(pause);
             } catch (InterruptedException e) {

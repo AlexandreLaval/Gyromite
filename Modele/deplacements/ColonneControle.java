@@ -9,7 +9,7 @@ public class ColonneControle extends RealisateurDeplacement {
     //Design pattern singleton
     private static ColonneControle colCont;
     private boolean enHaut = true;
-    private static final int NB_DEPLACEMENT = 2;
+    public static final int NB_DEPLACEMENT = 2;
     private int nbDeplacement = 0;
 
     //singleton
@@ -20,25 +20,14 @@ public class ColonneControle extends RealisateurDeplacement {
         return colCont;
     }
 
-    public static ColonneControle reset() {
-        colCont = new ColonneControle();
-        return colCont;
-    }
-
     @Override
     protected boolean realiserDeplacement() {
         boolean realiserDeplacement = false;
         if (directionCourante != null) {
             for (EntiteDynamique entite : lstEntitesDynamiques) {
-                int nbColonne = lstEntitesDynamiques.size();
-                if (directionCourante != null && nbDeplacement < NB_DEPLACEMENT * nbColonne) {
-                    realiserDeplacement = entite.avancerDirectionChoisie(directionCourante);
-                    if (realiserDeplacement)
-                        nbDeplacement++;
-                } else if (nbDeplacement >= NB_DEPLACEMENT * nbColonne) {
-                    resetDirection();
-                    enHaut = !enHaut;
-                    nbDeplacement = 0;
+                if(entite.avancerDirectionChoisie(directionCourante))
+                {
+                    realiserDeplacement = true;
                 }
             }
         }
@@ -49,7 +38,12 @@ public class ColonneControle extends RealisateurDeplacement {
         directionCourante = enHaut ? Direction.Bas : Direction.Haut;
     }
 
+    public Direction getDirectionCourante() {
+        return directionCourante;
+    }
+
     public void resetDirection() {
+        enHaut = !enHaut;
         directionCourante = null;
     }
 
