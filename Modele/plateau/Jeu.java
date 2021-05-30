@@ -71,7 +71,7 @@ public class Jeu {
         try {
             String path = new File(".").getCanonicalPath();
 
-            File carte = new File(path.replace("\\", "\\\\") + "\\Niveaux\\NiveauTest.csv");
+            File carte = new File(path.replace("\\", "\\\\") + "\\Niveaux\\Niveau1.csv");
             FileReader fr = new FileReader(carte);
             BufferedReader br = new BufferedReader(fr);
             StringBuffer sb = new StringBuffer();
@@ -290,7 +290,7 @@ public class Jeu {
         }
         if (e instanceof Heros) {
             if (grilleEntites[x][y] instanceof Smick) {
-                e.setCasePrecedente(((Smick) grilleEntites[x][y]).getCasePrecedente());
+                grilleEntites[heros.getX()][heros.getY()] = heros.getCasePrecedente();
                 playerLooseLife();
             } else {
                 if (grilleEntites[x][y] instanceof Bombe) {

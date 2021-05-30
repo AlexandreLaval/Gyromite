@@ -9,6 +9,18 @@ public class Controle4Directions extends RealisateurDeplacement {
     //design pattern Singleton
     private static Controle4Directions cont4Dir;
 
+    public static Controle4Directions getInstance() {
+        if (cont4Dir == null) {
+            cont4Dir = new Controle4Directions();
+        }
+        return cont4Dir;
+    }
+
+    public static void resetSingletion()
+    {
+        cont4Dir = null;
+    }
+
     public void setDirectionCourante(Direction direction) {
         directionCourante = direction;
     }
@@ -49,12 +61,5 @@ public class Controle4Directions extends RealisateurDeplacement {
 
     public void resetControle4Directions() {
         directionCourante = null;
-    }
-
-    public static Controle4Directions getInstance() {
-        if (cont4Dir == null) {
-            cont4Dir = new Controle4Directions();
-        }
-        return cont4Dir;
     }
 }
