@@ -2,6 +2,9 @@ package Modele.deplacements;
 
 import Modele.plateau.EntiteDynamique;
 
+/**
+ * Controle les déplacements des colonnes dans le jeu
+ */
 public class ColonneControle extends RealisateurDeplacement {
 
     private Direction directionCourante;

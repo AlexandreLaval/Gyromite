@@ -2,6 +2,9 @@ package Modele.plateau;
 
 import Modele.plateau.enums.SupportColonneType;
 
+/**
+ * Entite SupportColonne
+ */
 public class SupportColonne extends EntiteStatique{
 
     private final SupportColonneType supportColonneType;

@@ -3,6 +3,9 @@ package Modele.deplacements;
 import Modele.plateau.Entite;
 import Modele.plateau.EntiteDynamique;
 
+/**
+ * Controle les déplacements des du joueur dans le jeu
+ */
 public class Controle4Directions extends RealisateurDeplacement {
     private static Direction directionCourante;
 

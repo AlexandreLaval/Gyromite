@@ -1,5 +1,8 @@
 package Modele.plateau;
 
+/**
+ * Entite Mur
+ */
 public class Mur extends EntiteStatique {
     public Mur(Jeu _jeu) { super(_jeu); }
 

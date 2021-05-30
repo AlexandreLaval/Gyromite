@@ -166,9 +166,9 @@ public class VueControleur extends JFrame implements Observer {
                     tabJLabel[x][y].setIcon(imgIcons.get("Corde"));
                 } else if (e instanceof Bombe) {
                     tabJLabel[x][y].setIcon(imgIcons.get("Bombe"));
-                } else if (e instanceof PoutreHorizontal) {
+                } else if (e instanceof PoutreHorizontale) {
                     tabJLabel[x][y].setIcon(imgIcons.get("PlateformeHoriz"));
-                } else if (e instanceof PoutreVertical) {
+                } else if (e instanceof PoutreVerticale) {
                     tabJLabel[x][y].setIcon(imgIcons.get("PlateformeVert"));
                 } else if (e instanceof SupportColonne) {
                     if(((SupportColonne) e).getSupportColonneType().equals(SupportColonneType.Droite)){

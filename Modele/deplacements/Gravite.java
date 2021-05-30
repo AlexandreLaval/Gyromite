@@ -3,6 +3,9 @@ package Modele.deplacements;
 import Modele.plateau.Entite;
 import Modele.plateau.EntiteDynamique;
 
+/**
+ * Controle l'effet de gravité dans le jeu
+ */
 public class Gravite extends RealisateurDeplacement {
 
     private static Gravite gravite;

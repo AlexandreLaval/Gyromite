@@ -2,10 +2,12 @@ package Modele.deplacements;
 
 import Modele.plateau.Entite;
 import Modele.plateau.EntiteDynamique;
-import Modele.plateau.Heros;
 
 import java.util.Random;
 
+/**
+ * Controle les déplacements des smicks dans le jeu
+ */
 public class IA extends RealisateurDeplacement {
 
     private static IA ia;

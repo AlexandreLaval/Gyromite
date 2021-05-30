@@ -53,7 +53,7 @@ public class endGame extends JFrame implements MouseListener {
                 btnJouer  = new JButton("QUITTER");
             }
             btnJouer.setForeground(Color.black);
-            btnJouer.setBackground(Color.blue);
+            btnJouer.setBackground(Color.white);
             btnJouer.setFocusPainted(false);
             btnJouer.addMouseListener(this);
 

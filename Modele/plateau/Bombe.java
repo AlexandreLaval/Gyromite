@@ -1,5 +1,8 @@
 package Modele.plateau;
 
+/**
+ * Entite Bombe est un collectable
+ */
 public class Bombe extends EntiteStatique{
     public Bombe(Jeu _jeu){ super(_jeu);}
 

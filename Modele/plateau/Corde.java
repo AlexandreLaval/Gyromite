@@ -1,5 +1,8 @@
 package Modele.plateau;
 
+/**
+ * Entite corde, permet de monter ou de descendre
+ */
 public class Corde extends EntiteStatique{
 
     public Corde(Jeu _jeu){super(_jeu);}

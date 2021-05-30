@@ -1,5 +1,8 @@
 package Modele.plateau;
 
+/**
+ * Entite Navet, bonus
+ */
 public class Navet extends EntiteStatique {
 
     public Navet(Jeu _jeu){super(_jeu);}
