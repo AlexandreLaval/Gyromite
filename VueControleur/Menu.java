@@ -18,7 +18,7 @@ public class Menu extends JFrame implements MouseListener {
         this.setTitle("Menu du jeu");
         this.setSize(800,800);
         this.setLocationRelativeTo(null);
-        setResizable(true);
+        setResizable(false);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         //panel bouton
@@ -53,9 +53,11 @@ public class Menu extends JFrame implements MouseListener {
         jeu.getOrdonnanceur().addObserver(vc);
 
         vc.setVisible(true);
+
         jeu.getOrdonnanceur().start();
 
         this.setVisible(false);
+
     }
 
     @Override

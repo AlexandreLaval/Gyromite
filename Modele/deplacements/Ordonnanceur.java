@@ -33,7 +33,7 @@ public class Ordonnanceur extends Observable implements Runnable {
 
     @Override
     public void run() {
-        while (!jeu.isGameOver() && !jeu.isGameWin()) {
+        while (!jeu.getIsUpdate()) {
             jeu.checkIsWin();
             setChanged();
             notifyObservers();
@@ -48,5 +48,6 @@ public class Ordonnanceur extends Observable implements Runnable {
                 e.printStackTrace();
             }
         }
+
     }
 }
