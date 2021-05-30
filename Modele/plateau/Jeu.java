@@ -1,6 +1,8 @@
 package Modele.plateau;
 
 import Modele.deplacements.*;
+import Modele.plateau.enums.ColonneType;
+import Modele.plateau.enums.SupportColonneType;
 
 import java.awt.*;
 import java.io.BufferedReader;
@@ -68,7 +70,7 @@ public class Jeu {
         try {
             String path = new File(".").getCanonicalPath();
 
-            File carte = new File(path.replace("\\", "\\\\") + "\\Niveaux\\Niveau1.csv");
+            File carte = new File(path.replace("\\", "\\\\") + "\\Niveaux\\NiveauTest.csv");
             FileReader fr = new FileReader(carte);
             BufferedReader br = new BufferedReader(fr);
             StringBuffer sb = new StringBuffer();
@@ -90,7 +92,7 @@ public class Jeu {
             for (int x = 0; x < Jeu.SIZE_X; x++) {
                 int n = niveauReader.charAt(y * Jeu.SIZE_X + x);
                 switch (n) {
-                    case 'A':
+                    case 'A': //Personnage joueur
                         heros = new Heros(this, x, y, new CaseVide(this));
                         addEntite(heros, x, y);
                         orgPos = new Point(x, y);
@@ -103,50 +105,59 @@ public class Jeu {
                         Gravite.getInstance().addEntiteDynamique(smick);
                         IA.getInstance().addEntiteDynamique(smick);
                         break;
-                    case 'W':
+                    case 'W': //Mur
                         addEntite(new Mur(this), x, y);
                         break;
-                    case 'E':
+                    case 'E': //Bombe
                         addEntite(new Bombe(this), x, y);
                         compteurBombe++;
                         break;
-                    case 'V':
+                    case 'V': //CaseVide
                         addEntite(new CaseVide(this), x, y);
                         break;
-                    case 'C':
+                    case 'C': //Corde
                         addEntite(new Corde(this), x, y);
                         break;
-                    case 'N':
+                    case 'N': //Navet
                         addEntite(new Navet(this), x, y);
                         break;
-                    case 'P':
+                    case 'P': //Plateforme Horizontal
                         addEntite(new PoutreHorizontal(this), x, y);
                         break;
-                    case 'H':
+                    case 'O': //Plateforme Vertical
+                        addEntite(new PoutreVertical(this), x, y);
+                        break;
+                    case 'G': // Support colonne gauche
+                        addEntite(new SupportColonne(this, SupportColonneType.Gauche), x, y);
+                        break;
+                    case 'D': // Support colonne droit
+                        addEntite(new SupportColonne(this, SupportColonneType.Droite), x, y);
+                        break;
+                    case 'H': //bloc de colonne extremité haute
                         Colonne colH = new Colonne(this, ColonneType.Haut);
                         addEntite(colH, x, y);
                         ColonneEntiere colEntiere = new ColonneEntiere(this);
                         colEntiere.addCol(colH);
                         lstColEntiere.add(colEntiere);
                         break;
-                    case 'M':
+                    case 'M': //bloc de colonne milieu
                         Colonne colM = new Colonne(this, ColonneType.Milieu);
                         addEntite(colM, x, y);
 
-                        for (int i = 0; i < lstColEntiere.size(); i++) {
-                            if (lstColEntiere.get(i).colonnes.size() == 1)
-                                lstColEntiere.get(i).addCol(colM);
+                        for (ColonneEntiere colonneEntiere : lstColEntiere) {
+                            if (colonneEntiere.colonnes.size() == 1)
+                                colonneEntiere.addCol(colM);
                         }
 
                         break;
-                    case 'B':
+                    case 'B': //bloc de colonne extremité basse
                         Colonne colB = new Colonne(this, ColonneType.Bas);
                         addEntite(colB, x, y);
 
-                        for (int i = 0; i < lstColEntiere.size(); i++) {
-                            if (lstColEntiere.get(i).colonnes.size() == 2) {
-                                lstColEntiere.get(i).addCol(colB);
-                                ColonneControle.getInstance().addEntiteDynamique(lstColEntiere.get(i));
+                        for (ColonneEntiere colonneEntiere : lstColEntiere) {
+                            if (colonneEntiere.colonnes.size() == 2) {
+                                colonneEntiere.addCol(colB);
+                                ColonneControle.getInstance().addEntiteDynamique(colonneEntiere);
                             }
                         }
                         break;
@@ -291,6 +302,7 @@ public class Jeu {
                 carte.remove(grilleEntites[x][y]);
                 grilleEntites[x][y] = e;
                 carte.put(e, new Point(x, y));
+                this.heros.setPosXY(x,y);
             }
         }
         if (e instanceof Colonne) {
@@ -307,9 +319,10 @@ public class Jeu {
         if (this.heros.getHerosLife() <= 0) {
             isGameOver = true;
         }
-        remetCasePrecedente( this.heros,  this.carte.get(heros).x,  this.carte.get(heros).y);
+        remetCasePrecedente( this.heros,  this.heros.getX(),  this.heros.getY());
         this.carte.put( this.heros, orgPos);
         this.grilleEntites[orgPos.x][orgPos.y] =  this.heros;
+        this.heros.setPosXY(orgPos.x,orgPos.y);
         this.heros.setCasePrecedente(new CaseVide(this));
         this.heros.setDirectionCourante(Direction.Droite);
     }

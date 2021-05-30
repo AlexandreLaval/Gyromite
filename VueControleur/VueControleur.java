@@ -19,6 +19,8 @@ import Modele.deplacements.ColonneControle;
 import Modele.deplacements.Controle4Directions;
 import Modele.deplacements.Direction;
 import Modele.plateau.*;
+import Modele.plateau.enums.ColonneType;
+import Modele.plateau.enums.SupportColonneType;
 
 
 /**
@@ -93,6 +95,9 @@ public class VueControleur extends JFrame implements Observer {
         imgIcons.put("SmickClimb", chargerIcone("Images/smickClimb.png"));
         imgIcons.put("SmickIdleD", chargerIcone("Images/smickIdleDroite.png"));
         imgIcons.put("SmickIdleG", chargerIcone("Images/smickIdleGauche.png"));
+        imgIcons.put("PlateformeVert", chargerIcone("Images/plateformeVerticale.png"));
+        imgIcons.put("SupportColonneG", chargerIcone("Images/supportColonneG.png"));
+        imgIcons.put("SupportColonneD", chargerIcone("Images/supportColonneD.png"));
         imgIcons.put("Vie", chargerIcone("Images/life.png"));
         imgIcons.put("Zero", chargerIcone("Images/zero.png"));
         imgIcons.put("Un", chargerIcone("Images/un.png"));
@@ -154,13 +159,21 @@ public class VueControleur extends JFrame implements Observer {
                     tabJLabel[x][y].setIcon(imgIcons.get("Bombe"));
                 } else if (e instanceof PoutreHorizontal) {
                     tabJLabel[x][y].setIcon(imgIcons.get("PlateformeHoriz"));
+                } else if (e instanceof PoutreVertical) {
+                    tabJLabel[x][y].setIcon(imgIcons.get("PlateformeVert"));
+                } else if (e instanceof SupportColonne) {
+                    if(((SupportColonne) e).getSupportColonneType().equals(SupportColonneType.Droite)){
+                        tabJLabel[x][y].setIcon(imgIcons.get("SupportColonneD"));
+                    } else if( ((SupportColonne) e).getSupportColonneType().equals(SupportColonneType.Gauche)){
+                        tabJLabel[x][y].setIcon(imgIcons.get("SupportColonneG"));
+                    }
                 } else if (e instanceof Heros) {
                     if (((Heros) e).getCasePrecedente() instanceof Corde) {
                         tabJLabel[x][y].setIcon(imgIcons.get("HerosClimb"));
                     } else {
-                        if (((Heros) e).getFaceDirection() == Direction.Droite) {
+                        if (((Heros) e).getFaceDirection().equals(Direction.Droite)) {
                             tabJLabel[x][y].setIcon(imgIcons.get("HerosIdleD"));
-                        } else if (((Heros) e).getDirectionCourante() == Direction.Gauche) {
+                        } else if (((Heros) e).getDirectionCourante().equals(Direction.Gauche)) {
                             tabJLabel[x][y].setIcon(imgIcons.get("HerosIdleG"));
                         }
                     }
@@ -168,18 +181,18 @@ public class VueControleur extends JFrame implements Observer {
                     if (((Smick) e).getCasePrecedente() instanceof Corde) {
                         tabJLabel[x][y].setIcon(imgIcons.get("SmickClimb"));
                     } else {
-                        if (((Smick) e).getFaceDirection() == Direction.Droite) {
+                        if (((Smick) e).getFaceDirection().equals(Direction.Droite)) {
                             tabJLabel[x][y].setIcon(imgIcons.get("SmickIdleD"));
-                        } else if (((Smick) e).getDirectionCourante() == Direction.Gauche) {
+                        } else if (((Smick) e).getDirectionCourante().equals(Direction.Gauche)) {
                             tabJLabel[x][y].setIcon(imgIcons.get("SmickIdleG"));
                         }
                     }
                 } else if (e instanceof Colonne) {
-                    if (((Colonne) e).getColonneType() == ColonneType.Haut) {
+                    if (((Colonne) e).getColonneType().equals(ColonneType.Haut)) {
                         tabJLabel[x][y].setIcon(imgIcons.get("ColonneHaut"));
-                    } else if (((Colonne) e).getColonneType() == ColonneType.Milieu) {
+                    } else if (((Colonne) e).getColonneType().equals(ColonneType.Milieu)) {
                         tabJLabel[x][y].setIcon(imgIcons.get("ColonneMilieu"));
-                    } else if (((Colonne) e).getColonneType() == ColonneType.Bas) {
+                    } else if (((Colonne) e).getColonneType().equals(ColonneType.Bas)) {
                         tabJLabel[x][y].setIcon(imgIcons.get("ColonneBas"));
                     }
                 }
