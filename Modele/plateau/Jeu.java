@@ -292,7 +292,7 @@ public class Jeu {
         }
         if (e instanceof Heros) {
             if (grilleEntites[x][y] instanceof Smick) {
-                e.setCasePrecedente(((Smick) grilleEntites[x][y]).getCasePrecedente());
+                grilleEntites[heros.getX()][heros.getY()] = heros.getCasePrecedente();
                 playerLooseLife();
             } else {
                 if (grilleEntites[x][y] instanceof Bombe) {
@@ -359,7 +359,7 @@ public class Jeu {
     public void setIsUpdate(boolean bool){
         this.isUpdate = bool;
     }
-
+  
     public int getNiveau(){
         return niveau;
     }

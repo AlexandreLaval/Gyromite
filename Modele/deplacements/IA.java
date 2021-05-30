@@ -17,6 +17,11 @@ public class IA extends RealisateurDeplacement {
         return ia;
     }
 
+    public static void resetSingletion()
+    {
+        ia = null;
+    }
+
     public static Direction randomDirection() {
         int rand = new Random().nextInt(4);
         switch (rand) {

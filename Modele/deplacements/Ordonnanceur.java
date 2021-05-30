@@ -61,5 +61,9 @@ public class Ordonnanceur extends Observable implements Runnable {
                 e.printStackTrace();
             }
         }
+        Controle4Directions.resetSingletion();
+        IA.resetSingletion();
+        Gravite.resetSingletion();
+        ColonneControle.resetSingletion();
     }
 }

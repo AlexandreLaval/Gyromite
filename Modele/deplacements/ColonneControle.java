@@ -20,6 +20,11 @@ public class ColonneControle extends RealisateurDeplacement {
         return colCont;
     }
 
+    public static void resetSingletion()
+    {
+        colCont = null;
+    }
+
     @Override
     protected boolean realiserDeplacement() {
         boolean realiserDeplacement = false;

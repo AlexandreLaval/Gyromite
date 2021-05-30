@@ -14,6 +14,11 @@ public class Gravite extends RealisateurDeplacement {
         return gravite;
     }
 
+    public static void resetSingletion()
+    {
+        gravite = null;
+    }
+
     @Override
     protected boolean realiserDeplacement() {
         boolean realiserDeplacement = false;
