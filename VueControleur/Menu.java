@@ -11,8 +11,11 @@ import java.awt.event.MouseListener;
 
 public class Menu extends JFrame implements MouseListener {
 
-    public Menu(){
+    private int niveau = 1;
 
+    public Menu(int _niveau){
+
+        niveau = _niveau;
 
         //bases de la fenetre
         this.setTitle("Menu du jeu");
@@ -27,7 +30,7 @@ public class Menu extends JFrame implements MouseListener {
 
         JButton btnJouer = new JButton("JOUER");
         btnJouer.setForeground(Color.black);
-        btnJouer.setBackground(Color.blue);
+        btnJouer.setBackground(Color.white);
         btnJouer.setFocusPainted(false);
         btnJouer.addMouseListener(this);
 
@@ -46,7 +49,7 @@ public class Menu extends JFrame implements MouseListener {
     @Override
     public void mouseClicked(MouseEvent e) {
 
-        Jeu jeu = new Jeu();
+        Jeu jeu = new Jeu(niveau);
 
         VueControleur vc = new VueControleur(jeu);
 

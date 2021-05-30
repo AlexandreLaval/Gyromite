@@ -238,13 +238,13 @@ public class VueControleur extends JFrame implements Observer {
     }
 
     public void affichageGameOver() {
-            new endGame(false);
+            new endGame(false, jeu.getNiveau());
             jeu.setIsUpdate(true);
             this.dispose();
     }
 
     public void affichageGameWin() {
-        new endGame(true);
+        new endGame(true, jeu.getNiveau());
         jeu.setIsUpdate(true);
         this.dispose();
     }
