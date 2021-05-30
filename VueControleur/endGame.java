@@ -1,5 +1,6 @@
 package VueControleur;
 
+import Modele.plateau.Jeu;
 import VueControleur.Panels.gameOverPanel;
 import VueControleur.Panels.winPanel;
 
@@ -12,9 +13,11 @@ public class endGame extends JFrame implements MouseListener {
 
     public boolean isWin;
     public int score;
+    public int niveau;
 
-    public endGame(boolean _win){
+    public endGame(boolean _win, int _niveau){
         this.isWin = _win;
+
         this.setTitle("END GAME");
         this.setSize(500,500);
         this.setLocationRelativeTo(null);
@@ -35,7 +38,7 @@ public class endGame extends JFrame implements MouseListener {
 
             JButton btnJouer = new JButton("MENU");
             btnJouer.setForeground(Color.black);
-            btnJouer.setBackground(Color.blue);
+            btnJouer.setBackground(Color.white);
             btnJouer.setFocusPainted(false);
             btnJouer.addMouseListener(this);
 
@@ -60,7 +63,23 @@ public class endGame extends JFrame implements MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        new Menu();
+        if(isWin && niveau!=2){
+            Jeu jeu = new Jeu(2);
+
+            VueControleur vc = new VueControleur(jeu);
+
+            jeu.getOrdonnanceur().addObserver(vc);
+
+            vc.setVisible(true);
+
+            jeu.getOrdonnanceur().start();
+            this.dispose();
+        }
+        else if (!isWin && niveau==1)
+            new Menu(1);
+
+        else if (!isWin && niveau==2)
+            new Menu(2);
         this.dispose();
     }
 

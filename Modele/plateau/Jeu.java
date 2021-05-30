@@ -32,6 +32,7 @@ public class Jeu {
     private boolean isUpdate = false; //gère la fin de l'ordonnanceur
 
     private int score;
+    private int niveau;
 
     private ArrayList<ColonneEntiere> lstColEntiere = new ArrayList<>();
 
@@ -49,7 +50,8 @@ public class Jeu {
         return grilleEntites;
     }
 
-    public Jeu() {
+    public Jeu(int _niveau) {
+        niveau = _niveau;
         chargerNiveau();
     }
 
@@ -71,7 +73,7 @@ public class Jeu {
         try {
             String path = new File(".").getCanonicalPath();
 
-            File carte = new File(path.replace("\\", "\\\\") + "\\Niveaux\\Niveau1.csv");
+            File carte = new File(path.replace("\\", "\\\\") + "\\Niveaux\\Niveau"+niveau+".csv");
             FileReader fr = new FileReader(carte);
             BufferedReader br = new BufferedReader(fr);
             StringBuffer sb = new StringBuffer();
@@ -356,5 +358,9 @@ public class Jeu {
 
     public void setIsUpdate(boolean bool){
         this.isUpdate = bool;
+    }
+  
+    public int getNiveau(){
+        return niveau;
     }
 }
