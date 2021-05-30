@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Jeu {
-
+    public static final int NB_MAX_OF_LVL = 2;
     public static final int SIZE_X = 20;
     public static final int SIZE_Y = 15;
 
@@ -29,8 +29,10 @@ public class Jeu {
 
     private boolean isGameOver = false;
     private boolean isGameWin = false;
+    private boolean isUpdate = false; //gère la fin de l'ordonnanceur
 
     private int score;
+    private int niveau;
 
     private ArrayList<ColonneEntiere> lstColEntiere = new ArrayList<>();
 
@@ -48,7 +50,8 @@ public class Jeu {
         return grilleEntites;
     }
 
-    public Jeu() {
+    public Jeu(int _niveau) {
+        niveau = _niveau;
         chargerNiveau();
     }
 
@@ -70,7 +73,7 @@ public class Jeu {
         try {
             String path = new File(".").getCanonicalPath();
 
-            File carte = new File(path.replace("\\", "\\\\") + "\\Niveaux\\NiveauTest.csv");
+            File carte = new File(path.replace("\\", "\\\\") + "\\Niveaux\\Niveau"+niveau+".csv");
             FileReader fr = new FileReader(carte);
             BufferedReader br = new BufferedReader(fr);
             StringBuffer sb = new StringBuffer();
@@ -114,6 +117,9 @@ public class Jeu {
                         break;
                     case 'V': //CaseVide
                         addEntite(new CaseVide(this), x, y);
+                        break;
+                    case 'X': //Plafond
+                        addEntite(new Plafond(this), x, y);
                         break;
                     case 'C': //Corde
                         addEntite(new Corde(this), x, y);
@@ -215,14 +221,14 @@ public class Jeu {
         return isEntitePlateforme;
     }
 
-
+    //Deplace l'entite d'une case dans la direction choisie si les contraintes sont satisfaites
     public boolean deplacerEntite(Entite entite, Direction direction) {
         int px = carte.get(entite).x;
         int py = carte.get(entite).y;
 
         boolean deplacementOK = false;
         if (entite instanceof EntiteDynamique) {
-            EntiteDynamique eD = (EntiteDynamique) entite;
+            EntiteDynamique eD = (EntiteDynamique) entite; //Pour eviter de cast à chaque appel et épurer le code
             switch (direction) {
                 case Droite:
                     remetCasePrecedente(eD, px, py);
@@ -233,7 +239,6 @@ public class Jeu {
                     remetCasePrecedente(eD, px, py);
                     replaceEntite(eD, px - 1, py);
                     deplacementOK = true;
-
                     break;
                 case Haut:
                     remetCasePrecedente(eD, px, py);
@@ -252,7 +257,7 @@ public class Jeu {
 
     public void ecraseEntite(EntiteDynamique colonne, EntiteDynamique entiteEcrasee) {
         if (entiteEcrasee instanceof Heros) {
-            colonne.setCasePrecedente(new CaseVide(this));
+            colonne.setCasePrecedente(heros.getCasePrecedente());
             grilleEntites[heros.getX()][heros.getY()] = heros.getCasePrecedente();
             playerLooseLife();
         } else if (entiteEcrasee instanceof Smick) {
@@ -267,6 +272,8 @@ public class Jeu {
         carte.put(e, new Point(x, y));
     }
 
+    //x = 0 y = 0
+    //x=1 y = 0
     private void remetCasePrecedente(EntiteDynamique e, int x, int y) {
         carte.remove(e);
         grilleEntites[x][y] = e.getCasePrecedente();
@@ -287,16 +294,20 @@ public class Jeu {
                 carte.put(e, new Point(x, y));
             }
         }
-        if (e instanceof Heros) {
+        else if (e instanceof Heros) {
             if (grilleEntites[x][y] instanceof Smick) {
-                e.setCasePrecedente(((Smick) grilleEntites[x][y]).getCasePrecedente());
+                grilleEntites[heros.getX()][heros.getY()] = heros.getCasePrecedente();
                 playerLooseLife();
             } else {
                 if (grilleEntites[x][y] instanceof Bombe) {
                     e.setCasePrecedente(new CaseVide(this));
                     this.setScore(this.getScore() + 1);
                     this.compteurBombe--;
-                } else {
+                } else if(grilleEntites[x][y] instanceof Navet){
+                    e.setCasePrecedente(new CaseVide(this));
+                    this.setScore(this.getScore() + 1);
+                }
+                else {
                     e.setCasePrecedente(grilleEntites[x][y]);
                 }
                 carte.remove(grilleEntites[x][y]);
@@ -305,7 +316,7 @@ public class Jeu {
                 this.heros.setPosXY(x,y);
             }
         }
-        if (e instanceof Colonne) {
+        else if (e instanceof Colonne) {
             e.setCasePrecedente(grilleEntites[x][y]);
             this.carte.remove(grilleEntites[x][y]);
             this.grilleEntites[x][y] = e;
@@ -322,9 +333,9 @@ public class Jeu {
         remetCasePrecedente( this.heros,  this.heros.getX(),  this.heros.getY());
         this.carte.put( this.heros, orgPos);
         this.grilleEntites[orgPos.x][orgPos.y] =  this.heros;
-        this.heros.setPosXY(orgPos.x,orgPos.y);
-        this.heros.setCasePrecedente(new CaseVide(this));
-        this.heros.setDirectionCourante(Direction.Droite);
+        this.heros.setPosXY(orgPos.x,orgPos.y); //on reset la position du joueur
+        this.heros.setCasePrecedente(new CaseVide(this)); //On stock une case vide comme case précedente
+        this.heros.setDirectionCourante(Direction.Droite); // Pour l'affichage
     }
 
     public void checkIsWin() {
@@ -347,5 +358,17 @@ public class Jeu {
 
     public void setScore(int score) {
         this.score = score;
+    }
+
+    public boolean getIsUpdate(){
+        return this.isUpdate;
+    }
+
+    public void setIsUpdate(boolean bool){
+        this.isUpdate = bool;
+    }
+  
+    public int getNiveau(){
+        return niveau;
     }
 }

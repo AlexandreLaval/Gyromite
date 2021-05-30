@@ -17,6 +17,11 @@ public class IA extends RealisateurDeplacement {
         return ia;
     }
 
+    public static void resetSingletion()
+    {
+        ia = null;
+    }
+
     public static Direction randomDirection() {
         int rand = new Random().nextInt(4);
         switch (rand) {
@@ -59,6 +64,7 @@ public class IA extends RealisateurDeplacement {
                         }
                         break;
                     case Droite, Gauche:
+                        //Si le smick est sur une corde il peut se laisser tomber dans le vide
                         if(entite.getCasePrecedente().peutPermettreDeMonterDescendre()){
                             if (entite.avancerDirectionChoisie(directionCourante)) {
                                 realiserDeplacement = true;

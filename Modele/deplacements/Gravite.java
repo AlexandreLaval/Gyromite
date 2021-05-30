@@ -14,13 +14,19 @@ public class Gravite extends RealisateurDeplacement {
         return gravite;
     }
 
+    public static void resetSingletion()
+    {
+        gravite = null;
+    }
+
     @Override
     protected boolean realiserDeplacement() {
         boolean realiserDeplacement = false;
         for (EntiteDynamique entite : lstEntitesDynamiques) {
+            entite.setFalling(false); // Pour l'affichage
             Entite entiteObservee = entite.regarderDansLaDirection(Direction.Bas);
-
             if (entiteObservee != null && !entiteObservee.peutServirDeSupport() && !entite.getCasePrecedente().peutPermettreDeMonterDescendre()) {
+                entite.setFalling(true); // Pour l'affichage
                 if (entite.avancerDirectionChoisie(Direction.Bas)) {
                     realiserDeplacement = true;
                 }

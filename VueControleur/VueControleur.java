@@ -1,6 +1,6 @@
 package VueControleur;
 
-import java.awt.GridLayout;
+import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
@@ -43,6 +43,7 @@ public class VueControleur extends JFrame implements Observer {
 
 
     public VueControleur(Jeu _jeu) {
+
         sizeX = Jeu.SIZE_X;
         sizeY = Jeu.SIZE_Y;
         jeu = _jeu;
@@ -51,6 +52,7 @@ public class VueControleur extends JFrame implements Observer {
         placerLesComposantsGraphiques();
         ajouterEcouteurClavier();
     }
+
 
     private void ajouterEcouteurClavier() {
         addKeyListener(new KeyAdapter() { // new KeyAdapter() { ... } est une instance de classe anonyme, il s'agit d'un objet qui correspond au controleur dans MVC
@@ -98,6 +100,11 @@ public class VueControleur extends JFrame implements Observer {
         imgIcons.put("PlateformeVert", chargerIcone("Images/plateformeVerticale.png"));
         imgIcons.put("SupportColonneG", chargerIcone("Images/supportColonneG.png"));
         imgIcons.put("SupportColonneD", chargerIcone("Images/supportColonneD.png"));
+        imgIcons.put("BordureSup", chargerIcone("Images/bordureSuperieure.png"));
+        imgIcons.put("HerosJumpD", chargerIcone("Images/herosJumpD.png"));
+        imgIcons.put("HerosJumpG", chargerIcone("Images/herosJumpG.png"));
+        imgIcons.put("SmickJumpD", chargerIcone("Images/smickJumpD.png"));
+        imgIcons.put("SmickJumpG", chargerIcone("Images/smickJumpG.png"));
         imgIcons.put("Vie", chargerIcone("Images/life.png"));
         imgIcons.put("Zero", chargerIcone("Images/zero.png"));
         imgIcons.put("Un", chargerIcone("Images/un.png"));
@@ -151,6 +158,8 @@ public class VueControleur extends JFrame implements Observer {
                     tabJLabel[x][y].setIcon(imgIcons.get("Mur"));
                 } else if (e instanceof CaseVide) {
                     tabJLabel[x][y].setIcon(imgIcons.get("CaseVide"));
+                } else if (e instanceof Plafond) {
+                    tabJLabel[x][y].setIcon(imgIcons.get("BordureSup"));
                 } else if (e instanceof Navet) {
                     tabJLabel[x][y].setIcon(imgIcons.get("Navet"));
                 } else if (e instanceof Corde) {
@@ -170,11 +179,20 @@ public class VueControleur extends JFrame implements Observer {
                 } else if (e instanceof Heros) {
                     if (((Heros) e).getCasePrecedente() instanceof Corde) {
                         tabJLabel[x][y].setIcon(imgIcons.get("HerosClimb"));
-                    } else {
+                    }
+                    else {
                         if (((Heros) e).getFaceDirection().equals(Direction.Droite)) {
-                            tabJLabel[x][y].setIcon(imgIcons.get("HerosIdleD"));
-                        } else if (((Heros) e).getDirectionCourante().equals(Direction.Gauche)) {
-                            tabJLabel[x][y].setIcon(imgIcons.get("HerosIdleG"));
+                            if(((Heros) e).isFalling()){
+                                tabJLabel[x][y].setIcon(imgIcons.get("HerosJumpD"));
+                            }else {
+                                tabJLabel[x][y].setIcon(imgIcons.get("HerosIdleD"));
+                            }
+                        } else if (((Heros) e).getFaceDirection().equals(Direction.Gauche)) {
+                            if(((Heros) e).isFalling()){
+                                tabJLabel[x][y].setIcon(imgIcons.get("HerosJumpG"));
+                            }else{
+                                tabJLabel[x][y].setIcon(imgIcons.get("HerosIdleG"));
+                            }
                         }
                     }
                 } else if (e instanceof Smick) {
@@ -182,9 +200,18 @@ public class VueControleur extends JFrame implements Observer {
                         tabJLabel[x][y].setIcon(imgIcons.get("SmickClimb"));
                     } else {
                         if (((Smick) e).getFaceDirection().equals(Direction.Droite)) {
-                            tabJLabel[x][y].setIcon(imgIcons.get("SmickIdleD"));
-                        } else if (((Smick) e).getDirectionCourante().equals(Direction.Gauche)) {
-                            tabJLabel[x][y].setIcon(imgIcons.get("SmickIdleG"));
+                            if(((Smick) e).isFalling()){
+                                tabJLabel[x][y].setIcon(imgIcons.get("SmickJumpD"));
+                            }else{
+                                tabJLabel[x][y].setIcon(imgIcons.get("SmickIdleD"));
+                            }
+                        } else if (((Smick) e).getFaceDirection().equals(Direction.Gauche)) {
+                            if(((Smick) e).isFalling()){
+                                tabJLabel[x][y].setIcon(imgIcons.get("SmickJumpG"));
+                            }else
+                            {
+                                tabJLabel[x][y].setIcon(imgIcons.get("SmickIdleG"));
+                            }
                         }
                     }
                 } else if (e instanceof Colonne) {
@@ -236,13 +263,15 @@ public class VueControleur extends JFrame implements Observer {
     }
 
     public void affichageGameOver() {
-        if (jeu.isGameOver()) {
-
-        }
+            new endGame(false, jeu.getNiveau(), jeu.getScore());
+            jeu.setIsUpdate(true);
+            this.dispose();
     }
 
     public void affichageGameWin() {
-
+        new endGame(true, jeu.getNiveau(), jeu.getScore());
+        jeu.setIsUpdate(true);
+        this.dispose();
     }
 
 
@@ -250,5 +279,11 @@ public class VueControleur extends JFrame implements Observer {
     public void update(Observable o, Object arg) {
         mettreAJourAffichage();
         affichageVieEtScoreJoueur();
+
+        if(jeu.isGameWin())
+            affichageGameWin();
+
+        else if (jeu.isGameOver())
+            affichageGameOver();
     }
 }

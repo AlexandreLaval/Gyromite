@@ -2,12 +2,14 @@ package Modele.deplacements;
 
 import Modele.plateau.Jeu;
 
+import java.io.Console;
+import java.lang.constant.Constable;
 import java.util.ArrayList;
 import java.util.Observable;
 
 public class Ordonnanceur extends Observable implements Runnable {
 
-    private int pause = 300; // période de rafraichissement
+    private int pause = 250; // période de rafraichissement
     private Jeu jeu;
     private static ArrayList<RealisateurDeplacement> lstRealDeplacement = new ArrayList<>();
     private int compteurColMouv = 0;
@@ -34,11 +36,11 @@ public class Ordonnanceur extends Observable implements Runnable {
 
     @Override
     public void run() {
-        while (!jeu.isGameOver() && !jeu.isGameWin()) {
+        while (!jeu.getIsUpdate()) {
             jeu.checkIsWin();
             setChanged();
             notifyObservers();
-
+            //Faire descendre les colonnes par tick de temps
             if(ColonneControle.getInstance().getDirectionCourante() != null && compteurColMouv >= ColonneControle.NB_DEPLACEMENT) {
                 compteurColMouv = 0;
                 ColonneControle.getInstance().resetDirection();
@@ -51,13 +53,16 @@ public class Ordonnanceur extends Observable implements Runnable {
             }
             Controle4Directions.getInstance().resetControle4Directions();
 
-
-
             try {
                 Thread.sleep(pause);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
+        //Permet de reset nos singletons après la réussite d'un niveau
+        Controle4Directions.resetSingletion();
+        IA.resetSingletion();
+        Gravite.resetSingletion();
+        ColonneControle.resetSingletion();
     }
 }

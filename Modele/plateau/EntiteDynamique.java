@@ -11,6 +11,8 @@ public abstract class EntiteDynamique extends Entite {
 
     private Direction directionCourante;
 
+    private boolean isFalling = false;
+
     public EntiteDynamique(Jeu _jeu) {
         super(_jeu);
     }
@@ -21,6 +23,8 @@ public abstract class EntiteDynamique extends Entite {
 
     public void setDirectionCourante(Direction directionCourante) {
         this.directionCourante = directionCourante;
+
+        //Pour gerer l'affichage coté vue
         if (directionCourante == Direction.Droite) {
             faceDirection = Direction.Droite;
         } else if (directionCourante == Direction.Gauche) {
@@ -46,5 +50,13 @@ public abstract class EntiteDynamique extends Entite {
 
     public Entite regarderDansLaDirection(Direction d) {
         return jeu.regarderDansLaDirection(this, d);
+    }
+
+    public boolean isFalling() {
+        return isFalling;
+    }
+
+    public void setFalling(boolean falling) {
+        isFalling = falling;
     }
 }

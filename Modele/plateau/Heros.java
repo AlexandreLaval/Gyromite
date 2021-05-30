@@ -32,7 +32,7 @@ public class Heros extends EntiteDynamique{
         super(_jeu);
         x = _x;
         y = _y;
-        setCasePrecedente(casePrecedente);
+        this.setCasePrecedente(casePrecedente);
     }
 
     @Override
