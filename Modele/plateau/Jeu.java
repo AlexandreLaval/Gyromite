@@ -29,6 +29,7 @@ public class Jeu {
 
     private boolean isGameOver = false;
     private boolean isGameWin = false;
+    private boolean isUpdate = false; //gère la fin de l'ordonnanceur
 
     private int score;
 
@@ -347,5 +348,13 @@ public class Jeu {
 
     public void setScore(int score) {
         this.score = score;
+    }
+
+    public boolean getIsUpdate(){
+        return this.isUpdate;
+    }
+
+    public void setIsUpdate(boolean bool){
+        this.isUpdate = bool;
     }
 }
