@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Jeu {
-    public static final int NB_MAX_OF_LVL = 2;
+    public static final int NB_MAX_OF_LVL = 3;
     public static final int SIZE_X = 20;
     public static final int SIZE_Y = 15;
 
@@ -295,7 +295,6 @@ public class Jeu {
         }
         else if (e instanceof Heros) {
             if (grilleEntites[x][y] instanceof Smick) {
-               // grilleEntites[heros.getX()][heros.getY()] = heros.getCasePrecedente();
                 playerLooseLife();
             } else {
                 if (grilleEntites[x][y] instanceof Bombe) {

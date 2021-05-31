@@ -80,15 +80,14 @@ public class endGame extends JFrame implements MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        if(isWin && niveau==1){
-            nextLevel(2);
-        } else if(isWin && niveau == 2){
+        if(!isWin){
+            new Menu(this.niveau);
+        }
+        else if(isWin && this.niveau < Jeu.NB_MAX_OF_LVL){
+            nextLevel(this.niveau+1);
+        }else{
             System.exit(0);
         }
-        else if (!isWin && niveau==1)
-            new Menu(1);
-        else if (!isWin && niveau==2)
-            new Menu(2);
         this.dispose();
     }
 
