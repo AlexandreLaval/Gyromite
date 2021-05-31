@@ -2,6 +2,9 @@ package Modele.plateau;
 
 import Modele.plateau.enums.ColonneType;
 
+/**
+ * Entite colonne composant une ColonneEntiere
+ */
 public class Colonne extends EntiteDynamique{
     ColonneType colType;
 

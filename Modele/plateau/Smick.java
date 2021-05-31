@@ -2,6 +2,9 @@ package Modele.plateau;
 
 import Modele.deplacements.Direction;
 
+/**
+ * Entite Smick, ennemi du joueur controlé par la classe IA
+ */
 public class Smick extends EntiteDynamique{
 
 

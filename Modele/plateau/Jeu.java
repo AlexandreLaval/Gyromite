@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Jeu {
-    public static final int NB_MAX_OF_LVL = 2;
+    public static final int NB_MAX_OF_LVL = 3;
     public static final int SIZE_X = 20;
     public static final int SIZE_Y = 15;
 
@@ -128,10 +128,10 @@ public class Jeu {
                         addEntite(new Navet(this), x, y);
                         break;
                     case 'P': //Plateforme Horizontal
-                        addEntite(new PoutreHorizontal(this), x, y);
+                        addEntite(new PoutreHorizontale(this), x, y);
                         break;
                     case 'O': //Plateforme Vertical
-                        addEntite(new PoutreVertical(this), x, y);
+                        addEntite(new PoutreVerticale(this), x, y);
                         break;
                     case 'G': // Support colonne gauche
                         addEntite(new SupportColonne(this, SupportColonneType.Gauche), x, y);
@@ -272,8 +272,7 @@ public class Jeu {
         carte.put(e, new Point(x, y));
     }
 
-    //x = 0 y = 0
-    //x=1 y = 0
+
     private void remetCasePrecedente(EntiteDynamique e, int x, int y) {
         carte.remove(e);
         grilleEntites[x][y] = e.getCasePrecedente();
@@ -296,7 +295,6 @@ public class Jeu {
         }
         else if (e instanceof Heros) {
             if (grilleEntites[x][y] instanceof Smick) {
-                grilleEntites[heros.getX()][heros.getY()] = heros.getCasePrecedente();
                 playerLooseLife();
             } else {
                 if (grilleEntites[x][y] instanceof Bombe) {

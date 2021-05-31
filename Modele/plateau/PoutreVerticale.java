@@ -1,8 +1,11 @@
 package Modele.plateau;
 
-public class PoutreVertical extends EntiteStatique{
+/**
+ * Entite Poutre verticale
+ */
+public class PoutreVerticale extends EntiteStatique{
 
-    public PoutreVertical(Jeu _jeu){super(_jeu);}
+    public PoutreVerticale(Jeu _jeu){super(_jeu);}
 
     @Override
     public boolean traversable() {

@@ -1,5 +1,8 @@
 package Modele.plateau;
 
+/**
+ * Classe abstraite Entite
+ */
 public abstract class Entite {
 
     protected Jeu jeu;

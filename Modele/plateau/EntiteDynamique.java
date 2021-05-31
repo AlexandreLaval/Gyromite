@@ -1,8 +1,10 @@
 package Modele.plateau;
 
-
 import Modele.deplacements.Direction;
 
+/**
+ * Classe abstraite des entites dynamiques, heros, smick, colonne...
+ */
 public abstract class EntiteDynamique extends Entite {
 
     private Direction faceDirection = Direction.Droite;

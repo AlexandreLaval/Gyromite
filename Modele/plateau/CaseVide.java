@@ -1,5 +1,8 @@
 package Modele.plateau;
 
+/**
+ * Entite case vide
+ */
 public class CaseVide extends EntiteStatique {
     public CaseVide(Jeu _jeu) { super(_jeu); }
 

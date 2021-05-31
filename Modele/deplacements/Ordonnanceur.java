@@ -2,11 +2,12 @@ package Modele.deplacements;
 
 import Modele.plateau.Jeu;
 
-import java.io.Console;
-import java.lang.constant.Constable;
 import java.util.ArrayList;
 import java.util.Observable;
 
+/**
+ * Ordonnanceur déclenche les instances de RealisateurDeplacements de manière séquentielle
+ */
 public class Ordonnanceur extends Observable implements Runnable {
 
     private int pause = 250; // période de rafraichissement

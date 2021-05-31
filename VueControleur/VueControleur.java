@@ -53,7 +53,6 @@ public class VueControleur extends JFrame implements Observer {
         ajouterEcouteurClavier();
     }
 
-
     private void ajouterEcouteurClavier() {
         addKeyListener(new KeyAdapter() { // new KeyAdapter() { ... } est une instance de classe anonyme, il s'agit d'un objet qui correspond au controleur dans MVC
             @Override
@@ -112,6 +111,8 @@ public class VueControleur extends JFrame implements Observer {
         imgIcons.put("Trois", chargerIcone("Images/trois.png"));
         imgIcons.put("Quatre", chargerIcone("Images/quatre.png"));
         imgIcons.put("Cinq", chargerIcone("Images/cinq.png"));
+        imgIcons.put("Six", chargerIcone("Images/six.png"));
+        imgIcons.put("Sept", chargerIcone("Images/sept.png"));
     }
 
     private ImageIcon chargerIcone(String urlIcone) {
@@ -166,9 +167,9 @@ public class VueControleur extends JFrame implements Observer {
                     tabJLabel[x][y].setIcon(imgIcons.get("Corde"));
                 } else if (e instanceof Bombe) {
                     tabJLabel[x][y].setIcon(imgIcons.get("Bombe"));
-                } else if (e instanceof PoutreHorizontal) {
+                } else if (e instanceof PoutreHorizontale) {
                     tabJLabel[x][y].setIcon(imgIcons.get("PlateformeHoriz"));
-                } else if (e instanceof PoutreVertical) {
+                } else if (e instanceof PoutreVerticale) {
                     tabJLabel[x][y].setIcon(imgIcons.get("PlateformeVert"));
                 } else if (e instanceof SupportColonne) {
                     if(((SupportColonne) e).getSupportColonneType().equals(SupportColonneType.Droite)){
@@ -255,6 +256,12 @@ public class VueControleur extends JFrame implements Observer {
                 break;
             case 5:
                 tabJLabel[2][0].setIcon(imgIcons.get("Cinq"));
+                break;
+            case 6:
+                tabJLabel[2][0].setIcon(imgIcons.get("Six"));
+                break;
+            case 7:
+                tabJLabel[2][0].setIcon(imgIcons.get("Sept"));
                 break;
         }
 

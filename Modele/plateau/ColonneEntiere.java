@@ -1,14 +1,12 @@
 package Modele.plateau;
 
-import java.awt.*;
 import java.util.ArrayList;
 
-import Modele.deplacements.Controle4Directions;
 import Modele.deplacements.Direction;
-import Modele.deplacements.IA;
 
-import javax.naming.ldap.Control;
-
+/**
+ * Colonne entiere composée de 3 entites Colonne
+ */
 public class ColonneEntiere extends EntiteDynamique {
 
     public ArrayList<Colonne> colonnes;
@@ -56,7 +54,7 @@ public class ColonneEntiere extends EntiteDynamique {
                 if (entiteAuDessus instanceof EntiteDynamique) {
                     if (((EntiteDynamique) entiteAuDessus).regarderDansLaDirection(dir).traversable()) {
                         jeu.deplacerEntite(entiteAuDessus, Direction.Haut);
-                    } else {
+                    } else if (entiteAuDessus.peutEtreEcrase()) {
                         jeu.ecraseEntite(colonnes.get(i),(EntiteDynamique) entiteAuDessus);
                     }
                 }
@@ -66,7 +64,7 @@ public class ColonneEntiere extends EntiteDynamique {
             for (int i = NB_COLONNE - 1; i >= 0; i--) {
                 Entite entiteAuDessous = colonnes.get(i).regarderDansLaDirection(dir);
                 if (entiteAuDessous instanceof EntiteDynamique) {
-                    if (!((EntiteDynamique) entiteAuDessous).regarderDansLaDirection(dir).traversable()) {
+                    if (!((EntiteDynamique) entiteAuDessous).regarderDansLaDirection(dir).traversable() && entiteAuDessous.peutEtreEcrase()) {
                         jeu.ecraseEntite(colonnes.get(i),(EntiteDynamique) entiteAuDessous);
                     }
                 }
@@ -74,6 +72,5 @@ public class ColonneEntiere extends EntiteDynamique {
             }
         }
         return deplacerColonne;
-
     }
 }

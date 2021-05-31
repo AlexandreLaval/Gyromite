@@ -1,5 +1,8 @@
 package Modele.plateau;
 
+/**
+ * Entite Plafond, représente la couche supérieur d'un niveau
+ */
 public class Plafond extends EntiteStatique{
     public Plafond(Jeu _jeu) {
         super(_jeu);
