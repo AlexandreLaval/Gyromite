@@ -4,3 +4,6 @@ Réalisé en binôme par:
 
 LAVAL Alexandre
 THORAL Anais
+
+Version du jdk : openjdk-14.0.2
+IDE : IntelliJ
