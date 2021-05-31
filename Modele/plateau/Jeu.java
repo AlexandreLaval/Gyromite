@@ -325,7 +325,7 @@ public class Jeu {
     /**
      * Exemple :
      * Lors d'un déplacement en x=0, y=1, on remplace l'entite qui occupait cette position par l'entite
-     * en parametre, on stock l'entitePrecedente et on mets à jours notre grille de case coté vue et coté jeu
+     * en parametre, on stock l'entitePrecedente et on met à jours notre grille de case coté vue et coté jeu
      * @param e L'entite qui effectue le déplacement
      * @param x La position x du déplacement
      * @param y La position y du déplacement
