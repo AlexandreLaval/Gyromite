@@ -64,10 +64,20 @@ public class Jeu {
         return grilleEntites[x][y];
     }
 
+    /**
+     * Check si l'entite est bien dans la grille du jeu
+     * @param p Position de l'entite
+     * @return true ou false
+     */
     private boolean estDansGrille(Point p) {
         return p.x >= 0 && p.x < SIZE_X && p.y >= 0 && p.y < SIZE_Y;
     }
 
+    /**
+     * Ouvre et lit les fichiers NiveauX.csv qui contiennent les données pour charger le niveau
+     * Stocke le contenu dans un String
+     * Appelle la fonction initialisationDesEntites()
+     */
     public void chargerNiveau() {
         niveauReader = "";
         try {
@@ -89,6 +99,9 @@ public class Jeu {
         initialisationDesEntites();
     }
 
+    /**
+     * Parcours le string du niveau et ajoute les entites correspondants dans le jeu
+     */
     private void initialisationDesEntites() {
 
         for (int y = 0; y < Jeu.SIZE_Y; y++) {
@@ -177,6 +190,11 @@ public class Jeu {
         getOrdonnanceur().addDep(IA.getInstance());
     }
 
+    /**
+     * @param entite l'entite qui regarde
+     * @param direction la direction dans laquelle l'entite regarde
+     * @return l'entite observee
+     */
     public Entite regarderDansLaDirection(Entite entite, Direction direction) {
         Point positionEntite = carte.get(entite);
 
@@ -210,6 +228,11 @@ public class Jeu {
         return entiteRegardee;
     }
 
+    /**
+     *
+     * @param entite L'entite que l'on regarde (récupérée depuis regarderDansLaDirection())
+     * @return l'entite en dessous de l'entite que l'on regarde (gestion des deplacements du smick)
+     */
     public boolean checkSiEntiteDessousPeutServirDeSupport(Entite entite) {
         boolean isEntitePlateforme = false;
 
@@ -221,7 +244,12 @@ public class Jeu {
         return isEntitePlateforme;
     }
 
-    //Deplace l'entite d'une case dans la direction choisie si les contraintes sont satisfaites
+    /**
+     * Deplace l'entite d'une case dans la direction choisie si les contraintes sont satisfaites
+     * @param entite L'entite que l'on déplace
+     * @param direction La direction dans laquelle on la deplace
+     * @return true si le deplacement a pu se faire, false sinon
+     */
     public boolean deplacerEntite(Entite entite, Direction direction) {
         int px = carte.get(entite).x;
         int py = carte.get(entite).y;
@@ -255,6 +283,11 @@ public class Jeu {
         return deplacementOK;
     }
 
+    /**
+     * Lorsqu'une colonne ecrase une entite
+     * @param colonne l'entite bloc de colonne qui effectue l'ecrasement
+     * @param entiteEcrasee l'entite ecrasee
+     */
     public void ecraseEntite(EntiteDynamique colonne, EntiteDynamique entiteEcrasee) {
         if (entiteEcrasee instanceof Heros) {
             colonne.setCasePrecedente(heros.getCasePrecedente());
@@ -267,18 +300,36 @@ public class Jeu {
         }
     }
 
+    /**
+     * @param e L'entite à ajouter
+     * @param x Sa position x
+     * @param y Sa position y
+     */
     private void addEntite(Entite e, int x, int y) {
         grilleEntites[x][y] = e;
         carte.put(e, new Point(x, y));
     }
 
-
+    /**
+     * On remet l'entite qui occupait precedemment la case lors du déplacement d'une entite
+     * @param e L'entite qui se déplace
+     * @param x Sa position x
+     * @param y Sa position y
+     */
     private void remetCasePrecedente(EntiteDynamique e, int x, int y) {
         carte.remove(e);
         grilleEntites[x][y] = e.getCasePrecedente();
         carte.put(e.getCasePrecedente(), new Point(x, y));
     }
 
+    /**
+     * Exemple :
+     * Lors d'un déplacement en x=0, y=1, on remplace l'entite qui occupait cette position par l'entite
+     * en parametre, on stock l'entitePrecedente et on mets à jours notre grille de case coté vue et coté jeu
+     * @param e L'entite qui effectue le déplacement
+     * @param x La position x du déplacement
+     * @param y La position y du déplacement
+     */
     private void replaceEntite(EntiteDynamique e, int x, int y) {
         if (e instanceof Smick) {
             if (grilleEntites[x][y] instanceof Heros) {
@@ -322,6 +373,10 @@ public class Jeu {
         }
     }
 
+    /**
+     * Fais perdre une vie au joueur, reset sa position à sa position de spawn du début du niveau
+     * et remet la case précédente stockée au sein de l'entite heros
+     */
     public void playerLooseLife() {
         Controle4Directions.getInstance().resetControle4Directions();
         this.heros.setHerosLife(this.heros.getHerosLife() - 1);
@@ -336,6 +391,9 @@ public class Jeu {
         this.heros.setDirectionCourante(Direction.Droite); // Pour l'affichage
     }
 
+    /**
+     * Check si la partie est terminée
+     */
     public void checkIsWin() {
         if (this.compteurBombe <= 0) {
             isGameWin = true;
